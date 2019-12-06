@@ -76,6 +76,7 @@ export default {
   margin: 0;
 }
 input:focus{outline: none}
+button:focus{outline: none}
 .row {
   display: -webkit-box;
   display: -ms-flexbox;
