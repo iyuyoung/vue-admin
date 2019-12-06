@@ -1,0 +1,31 @@
+/*作者：于杨 email:892887001@qq.com*/
+*{transition: all .3s;-webkit-transition: all .3s;}
+body{overflow:hidden}
+.hide{display:none;}
+.show{display:block!important;}
+.hidden{visibility:hidden;}
+.el-tabs__nav-scroll{padding-left:45px;}
+.visible{visibility:visible;}
+body{margin:0;background:#f4f4f4;}
+ul li{list-style:none;}
+a{text-decoration:none;}
+.router{box-sizing:border-box;width:100%;min-height:100vh;background:#f4f4f4;margin-top:35px;}
+.card{margin-bottom:15px;padding:7.5px;border-radius:2px;background-color:#fff;box-shadow:0 1px 2px 0 rgba(0,0,0,.05);width:100%}
+.card-header{padding:0 15px;height:42px;border-bottom:1px solid #f6f6f6;border-radius:2px 2px 0 0;color:#333;font-size:14px;line-height:42px!important;}
+.card-body{padding:10px 15px;}
+table{width:100%;border-collapse:collapse;background-color:#fff;color:#666;border-spacing:0;}
+.el-breadcrumb{line-height:42px!important;}
+table tr{-webkit-transition:all .3s;transition:all .3s;}
+table td,th{position:relative;padding:9px 15px;min-height:20px;font-size:14px;line-height:20px;}
+table td{border-bottom:1px solid #e6e6e6;border-left:1px solid #e6e6e6;}
+table td:last-child{border-right:1px solid #e6e6e6;}
+.el-tabs{position:fixed;top:50px;left:0;box-sizing:border-box;padding-left:205px;width:100%;background:#fff;}
+.el-tabs__header{margin-bottom:0!important;}
+.el-table .cell{display:-webkit-box;overflow:hidden;overflow:hidden;-webkit-box-sizing:border-box;box-sizing:border-box;padding-right:10px;padding-left:10px;text-align:center;text-overflow:ellipsis;white-space:normal;line-height:23px;word-break:break-all;-webkit-line-clamp:2;-webkit-box-orient:vertical;word-break:break-all;}
+.ql-toolbar.ql-snow{border:1px solid #dcdfe5!important;border-radius:4px 4px 0 0;}
+.ql-picker{line-height:24px!important;}
+.ql-container.ql-snow{height:300px;border:1px solid #dcdfe5;border-radius:0 0 4px 4px;}
+.search{margin:15px auto;margin-bottom:10px;max-width:500px;}
+.create{display:flex;box-sizing:border-box;margin-top:20px;padding:0 15px;width:100%;font-size:15px;line-height:40px;justify-content:space-between;}
+.page{display:flex;width:100%;}
+.el-pagination{margin:auto;}
