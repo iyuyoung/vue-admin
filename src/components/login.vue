@@ -75,7 +75,7 @@ export default {
   height: 100vh;
   margin: 0;
 }
-
+input:focus{outline: none}
 .row {
   display: -webkit-box;
   display: -ms-flexbox;
