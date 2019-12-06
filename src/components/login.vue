@@ -6,28 +6,30 @@
           <h2>欢迎登录后台系统!</h2>
           <div class="form-group">
             <div class="input-group">
-              <input type="text"
-                     id="email"
-                     v-model="user.name"
-                     required="required"
-                     placeholder="用户名">
+              <input
+                type="text"
+                id="email"
+                v-model="user.name"
+                required="required"
+                placeholder="用户名"
+              />
               <i class="bar"></i>
             </div>
           </div>
           <div class="form-group">
             <div class="input-group">
-              <input type="password"
-                     id="password"
-                     v-model="user.password"
-                     required="required"
-                     placeholder="密码">
+              <input
+                type="password"
+                id="password"
+                v-model="user.password"
+                required="required"
+                placeholder="密码"
+              />
               <i class="bar"></i>
             </div>
           </div>
           <div class="down-container">
-            <button type="submit"
-                    class="btn btn-primary"
-                    @click="login">
+            <button type="submit" class="btn btn-primary" @click="login">
               登录
             </button>
           </div>
@@ -40,53 +42,29 @@
   </div>
 </template>
 <script>
-import { getData } from "../untils/js/request"
 import router from '../router/index'
 export default {
-  name: "login",
-  data () {
+  name: 'login',
+  data() {
     return {
-      user: { 'name': '', 'password': '' }
+      user: { name: '', password: '' }
     }
   },
   methods: {
     // 用户登录
-    login () {
+    login() {
       if (!this.user.name.trim().length) {
-        this.$notify({
-          title: '',
-          message: '用户名不能为空',
-          type: 'warning'
-        });
+        this.$message.error('用户名不能为空')
         return false
       } else if (!this.user.password.trim().length) {
-        this.$notify({
-          title: '',
-          message: '密码不能为空',
-          type: 'warning'
-        });
+        this.$message.error('密码不能为空')
         return false
       }
-      (async () => {
-        let data = await getData('/login/save', this.user, 'POST')
-        if (data.error_code === 10000) {
-          this.$notify({
-            title: '',
-            message: '登录成功',
-            type: 'success'
-          })
-          localStorage.setItem('token', data.data)
-          localStorage.setItem('username', this.user.name)
-          router.push({ path: '/', name: '主页' })
-          window.location.reload()
-        } else {
-          this.$notify({
-            title: '',
-            message: data.msg,
-            type: 'warning'
-          })
-        }
-      })()
+      this.$message.success('登录成功')
+      localStorage.setItem('token', 'token')
+      localStorage.setItem('username', this.user.name)
+      router.push({ path: '/', name: '主页' })
+      window.location.reload()
     }
   }
 }
@@ -230,6 +208,7 @@ label {
   transform: rotate(15deg);
   width: 200px;
   height: 130vh;
+  margin-top: -50px;
 }
 
 .btn {
