@@ -40,7 +40,7 @@
             </el-table-column>
             <el-table-column label="用户头像"
                              width="100">
-              <template scope="scope">
+              <template slot-scope="scope">
                 <span @click="look(scope.row.avatar)"
                       style="font-size:12px;color:#67C23A;">点击查看</span>
               </template>
@@ -57,7 +57,7 @@
                              label="注册时间">
             </el-table-column>
             <el-table-column label="设置">
-               <template scope="scope">
+               <template slot-scope="scope">
                     <el-button v-if="scope" type="primary" size="mini" plain>编辑</el-button>
               </template>
             </el-table-column>

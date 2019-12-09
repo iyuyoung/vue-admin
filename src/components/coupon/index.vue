@@ -27,7 +27,7 @@
                              label="账号">
             </el-table-column>
             <el-table-column label="修改密码">
-              <template scope="scope">
+              <template slot-scope="scope">
                 <span style="font-size:12px;color:#f80003;cursor:pointer"
                       title="修改密码"
                       @click="change(scope.row.id)">*****</span>
