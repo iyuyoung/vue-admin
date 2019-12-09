@@ -83,7 +83,6 @@ export default {
   height: 100vh;
   margin: 0;
 }
-input:focus{outline: none}
 
 div {
   position: relative;
@@ -96,7 +95,8 @@ input {
   font-family: inherit;
   background-color: hsl(236, 32%, 26%);
   padding: 0.35em 0.45em;
-  border: 1px solid transparent;
+  border: none;
+  border-bottom: 1px solid #ccc !important;
   transition: background-color 0.3s ease-in-out;
 }
 
@@ -105,12 +105,12 @@ input:focus {
 }
 
 input::placeholder {
-  color: hsla(0, 0%, 100%, 0.6);
+  color: #999;
 }
 
 span {
   position: absolute;
-  background-color: #3cefff;
+  background-color: rgba(74, 227, 135, 0.5);
   transition: transform 0.5s ease;
 }
 
@@ -183,6 +183,10 @@ button:focus{outline: none}
   margin: 0;
   height: 100%;
   overflow: hidden;
+  background: url('https://cdn.mphot.cn/background.jpg');
+  background-size: 100%;
+  width: 100%;
+  background-repeat: no-repeat;
 }
 
 .auth-wallpaper {
@@ -210,8 +214,12 @@ button:focus{outline: none}
 }
 
 .login {
-  width: 25rem;
-  margin: auto;
+    width: 25rem;
+    margin: auto;
+    background: #fff;
+    padding: 25px;
+    border-radius: 5px;
+    box-shadow: 0px 5px 10px 1px rgba(0,0,0,0.35);
 }
 
 .form-group {
@@ -226,6 +234,7 @@ button:focus{outline: none}
   min-height: 2.25rem;
   margin-top: 0.2rem;
   margin-bottom: 2.25rem;
+  overflow: hidden;
 }
 
 .form-group .input-group {
@@ -243,10 +252,7 @@ button:focus{outline: none}
 .form-group textarea {
   display: block;
   background: none;
-  padding: 0.125rem 0.125rem 0.0625rem;
   font-size: 1rem;
-  border-width: 0;
-  border-color: transparent;
   line-height: 2;
   width: 100%;
   transition: all 0.28s ease;
@@ -277,14 +283,13 @@ label {
 
 .form-group .bar {
   position: relative;
-  border-bottom: 0.0625rem solid #999;
   display: block;
 }
 
 .auth-content {
   padding: 0;
-  background-color: #fff;
   width: 50%;
+  height: 100vh;
   display: flex;
 }
 
@@ -296,7 +301,7 @@ label {
 
 .oblique {
   background-color: #282828;
-  right: 15.5%;
+  right: 5.5%;
   -webkit-transform: rotate(15deg);
   transform: rotate(15deg);
   width: 200px;
