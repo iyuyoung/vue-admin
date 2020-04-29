@@ -6,7 +6,7 @@
 </template>
 
 <script>
-import index from './components/Index'
+import index from './pages/Index'
 export default {
   name: 'app',
   components: { index },

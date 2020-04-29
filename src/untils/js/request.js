@@ -1,3 +1,5 @@
+import { DEV_URL, BASE_URL } from './common'
+
 //引入fly实例
 var fly = require("flyio")
 // loading
@@ -6,7 +8,7 @@ import {
     Loading
 } from 'element-ui'
 // 配置请求基地址
-fly.config.baseURL = process.env.NODE_ENV == 'development' ? 'http://127.0.0.1:8080/admin' : 'http://127.0.0.1:8081/admin'
+fly.config.baseURL = process.env.NODE_ENV == 'development' ? DEV_URL : BASE_URL
 
 fly.interceptors.request.use(
     (request) => {

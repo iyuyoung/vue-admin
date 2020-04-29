@@ -8,7 +8,7 @@ import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/vue-loading.css'
 
 Vue.config.productionTip = false
-Vue.prototype.Base = process.env.NODE_ENV == 'development' ? 'http://127.0.0.1:8080' : 'https://tail.mphot.cn/'
+Vue.prototype.Base = process.env.NODE_ENV == 'development' ? '/admin' : 'https://www.game577.cn/admin'
 Vue.use(VCharts, Loading)
 new Vue({
     router,

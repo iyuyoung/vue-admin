@@ -1,47 +1,26 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import login from '../components/login'
-import index from '../components/console/index'
-import user from '../components/user/index'
-import addUser from '../components/user/add'
-import editUser from '../components/user/edit'
-import activity from '../components/activity/index'
-import hot from '../components/goods/hot'
-import team from '../components/goods/team'
-import bargain from '../components/goods/bargain'
-import banner from '../components/banner/index'
-import addBanner from '../components/banner/add'
-import editBanner from '../components/banner/edit'
-import goods from '../components/goods/index'
-import addGoods from '../components/goods/add'
-import editGoods from '../components/goods/edit'
-import category from '../components/category/index'
-import addcategory from '../components/category/add'
-import editcategory from '../components/category/edit'
-import order from '../components/order/index'
-import jdorder from '../components/jdorder/index'
-import power from '../components/power/index'
-import addPower from '../components/power/add'
-import editPower from '../components/power/edit'
-import property from '../components/power/index'
-import addProperty from '../components/property/add'
-import editProperty from '../components/property/edit'
-import shopowner from '../components/shopowner/index'
-import addShopowner from '../components/shopowner/add'
-import editShopowner from '../components/shopowner/edit'
-import store from '../components/store/index'
-import addStore from '../components/store/add'
-import editStore from '../components/store/edit'
-import pet from '../components/pet/index'
-import addPet from '../components/pet/add'
-import editPet from '../components/pet/edit'
-import coupon from '../components/coupon/index'
-import addCoupon from '../components/coupon/add'
-import editCoupon from '../components/coupon/edit'
-import Admin from '../components/admin/index'
-import addAdmin from '../components/admin/add'
-import editAdmin from '../components/admin/edit'
-
+import login from '../pages/login'
+import index from '../pages/console/index'
+import user from '../pages/user/index'
+import editUser from '../pages/user/edit'
+import business from '../pages/business/index'
+import addBusiness from '../pages/business/add'
+import editBusiness from '../pages/business/edit'
+import Product from '../pages/product/index'
+import addProduct from '../pages/product/add'
+import editProduct from '../pages/product/edit'
+import category from '../pages/category/index'
+import addCategory from '../pages/category/add'
+import editCategory from '../pages/category/edit'
+import order from '../pages/order/index'
+import Admin from '../pages/admin/index'
+import addAdmin from '../pages/admin/add'
+import editAdmin from '../pages/admin/edit'
+import Rule from '../pages/rule/index'
+import addRule from '../pages/rule/add'
+import editRule from '../pages/rule/edit'
+import code from '../pages/exchange_code/index'
 Vue.use(VueRouter)
 
 const router = new VueRouter({
@@ -65,86 +44,48 @@ const router = new VueRouter({
             meta: {
                 keepAlive: true
             }
-        },
-        {
-            path: '/add-user',
-            name: '添加员工',
-            component: addUser,
-            meta: {
-                keepAlive: false
-            }
         }, {
             path: '/edit-user',
-            name: '编辑员工',
+            name: '编辑用户',
             component: editUser,
             meta: {
                 keepAlive: false
             }
         },
         {
-            path: '/activity',
-            name: '活动列表',
-            component: activity,
-            meta: {
-                keepAlive: true
-            }
-        },
-        {
-            path: '/hot',
-            name: '抢购列表',
-            component: hot,
-            meta: {
-                keepAlive: true
-            }
-        },{
-            path: '/team',
-            name: '团购列表',
-            component: team,
-            meta: {
-                keepAlive: true
-            }
-        },{
-            path: '/bargain',
-            name: '砍价列表',
-            component: bargain,
-            meta: {
-                keepAlive: true
-            }
-        },
-        {
             path: '/add-category',
-            name: '添加活动',
-            component: addcategory,
+            name: '添加分类',
+            component: addCategory,
             meta: {
                 keepAlive: true
             }
         }, {
             path: '/edit-category',
             name: '编辑分类',
-            component: editcategory,
+            component: editCategory,
             meta: {
                 keepAlive: false
             }
         },
         {
-            path: '/goods',
+            path: '/product',
             name: '商品列表',
-            component: goods,
+            component: Product,
             meta: {
                 keepAlive: true
             }
         },
         {
-            path: '/add-goods',
+            path: '/add-product',
             name: '添加商品',
-            component: addGoods,
+            component: addProduct,
             meta: {
                 keepAlive: false
             }
         }, {
-            path: '/edit-goods',
+            path: '/edit-product',
             name: '编辑商品',
-            component: editGoods,
+            component: editProduct,
             meta: {
                 keepAlive: false
             }
@@ -160,37 +101,37 @@ const router = new VueRouter({
         {
             path: '/add-category',
             name: '添加分类',
-            component: addcategory,
+            component: addCategory,
             meta: {
                 keepAlive: false
             }
         }, {
             path: '/edit-category',
             name: '编辑分类',
-            component: editcategory,
+            component: editCategory,
             meta: {
                 keepAlive: false
             }
         },
         {
-            path: '/banner',
-            name: 'banner列表',
-            component: banner,
+            path: '/business',
+            name: '商家列表',
+            component: business,
             meta: {
                 keepAlive: true
             }
         },
         {
-            path: '/add-banner',
-            name: '添加banner',
-            component: addBanner,
+            path: '/add-business',
+            name: '添加商家',
+            component: addBusiness,
             meta: {
                 keepAlive: false
             }
         }, {
-            path: '/edit-banner',
-            name: '编辑banner',
-            component: editBanner,
+            path: '/edit-business',
+            name: '编辑商家',
+            component: editBusiness,
             meta: {
                 keepAlive: false
             }
@@ -199,14 +140,6 @@ const router = new VueRouter({
             path: '/order',
             name: '订单列表',
             component: order,
-            meta: {
-                keepAlive: true
-            }
-        },
-        {
-            path: '/jdorder',
-            name: '京东账单',
-            component: jdorder,
             meta: {
                 keepAlive: true
             }
@@ -233,164 +166,32 @@ const router = new VueRouter({
             meta: {
                 keepAlive: false
             }
-        },
-        {
-            path: '/power',
-            name: '权限设置',
-            component: power,
+        }, {
+            path: '/rule',
+            name: '规则设置',
+            component: Rule,
             meta: {
                 keepAlive: true
             }
         },
         {
-            path: '/add-power',
-            name: '添加权限',
-            component: addPower,
+            path: '/add-rule',
+            name: '添加规则',
+            component: addRule,
             meta: {
                 keepAlive: false
             }
         }, {
-            path: '/edit-power',
-            name: '编辑权限',
-            component: editPower,
-            meta: {
-                keepAlive: false
-            }
-        },
-        {
-            path: '/shopowner',
-            name: '店长列表',
-            component: shopowner,
-            meta: {
-                keepAlive: true
-            }
-        },
-        {
-            path: '/add-shopowner',
-            name: '添加店长',
-            component: addShopowner,
+            path: '/edit-rule',
+            name: '编辑规则',
+            component: editRule,
             meta: {
                 keepAlive: false
             }
         }, {
-            path: '/edit-shopowner',
-            name: '编辑店长',
-            component: editShopowner,
-            meta: {
-                keepAlive: false
-            }
-        },
-        {
-            path: '/property',
-            name: '物业列表',
-            component: property,
-            meta: {
-                keepAlive: true
-            }
-        },
-        {
-            path: '/add-property',
-            name: '添加物业',
-            component: addProperty,
-            meta: {
-                keepAlive: false
-            }
-        }, {
-            path: '/edit-property',
-            name: '编辑物业',
-            component: editProperty,
-            meta: {
-                keepAlive: false
-            }
-        },
-        {
-            path: '/property',
-            name: '物业设置',
-            component: property,
-            meta: {
-                keepAlive: true
-            }
-        },
-        {
-            path: '/add-property',
-            name: '添加物业',
-            component: addProperty,
-            meta: {
-                keepAlive: false
-            }
-        }, {
-            path: '/edit-property',
-            name: '编辑物业',
-            component: editProperty,
-            meta: {
-                keepAlive: false
-            }
-        },
-        {
-            path: '/store',
-            name: '门店列表',
-            component: store,
-            meta: {
-                keepAlive: true
-            }
-        },
-        {
-            path: '/add-store',
-            name: '添加门店',
-            component: addStore,
-            meta: {
-                keepAlive: true
-            }
-        }, {
-            path: '/edit-store',
-            name: '编辑门店',
-            component: editStore,
-            meta: {
-                keepAlive: true
-            }
-        },
-        {
-            path: '/pet',
-            name: '宠物列表',
-            component: pet,
-            meta: {
-                keepAlive: true
-            }
-        },
-        {
-            path: '/add-pet',
-            name: '添加宠物',
-            component: addPet,
-            meta: {
-                keepAlive: true
-            }
-        }, {
-            path: '/edit-pet',
-            name: '编辑宠物',
-            component: editPet,
-            meta: {
-                keepAlive: true
-            }
-        },
-        {
-            path: '/coupon',
-            name: '优惠券列表',
-            component: coupon,
-            meta: {
-                keepAlive: true
-            }
-        },
-        {
-            path: '/add-coupon',
-            name: '添加优惠券',
-            component: addCoupon,
-            meta: {
-                keepAlive: false
-            }
-        }, {
-            path: '/edit-coupon',
-            name: '编辑优惠券',
-            component: editCoupon,
+            path: '/code',
+            name: '兑换码',
+            component: code,
             meta: {
                 keepAlive: false
             }

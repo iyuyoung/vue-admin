@@ -29,3 +29,13 @@ table td:last-child{border-right:1px solid #e6e6e6;}
 .create{display:flex;box-sizing:border-box;margin-top:20px;padding:0 15px;width:100%;font-size:15px;line-height:40px;justify-content:space-between;}
 .page{display:flex;width:100%;}
 .el-pagination{margin:auto;}
+.brand{color: #409EFF;}
+.success{color: #67C23A;}
+.warning{color: #E6A23C;}
+.danger{color: #F56C6C;}
+.info{color: #909399;}
+.brand-bg{background-color: #409EFF;}
+.success-bg{background-color: #67C23A;}
+.warning-bg{background-color: #E6A23C;}
+.danger-bg{background-color: #F56C6C;}
+.info-bg{background-color: #909399;}

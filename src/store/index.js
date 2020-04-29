@@ -15,16 +15,12 @@ const store = new Vuex.Store({
         active: '/'
     },
     mutations: {
-        setid(state, data) {
+        set_id(state, data) {
             this.state.id = data
         },
         // 修改 table
         edit_tabs(state, data) {
             this.state.table = data
-        },
-        // 修改 coupon
-        edit_coupon(state, data) {
-            this.state.coupon = data
         },
         // 添加tabs
         add_tabs(state, data) {
