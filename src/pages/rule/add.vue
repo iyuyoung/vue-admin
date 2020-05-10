@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { getData } from '../../untils/js/request'
+import { request } from '../../untils/js/request'
 
 export default {
   components: {
@@ -51,7 +51,7 @@ export default {
   mounted() {},
   methods: {
     async _create() {
-      let data = await getData('rule', this.form, 'POST')
+      let data = await request('rule', this.form, 'POST')
       if (data.error_code === 10000) {
         this.$message.success('添加成功')
       }

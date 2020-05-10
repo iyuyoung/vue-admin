@@ -90,7 +90,7 @@
 </template>
 
 <script>
-import { getData } from "../../untils/js/request"
+import { request } from "../../untils/js/request"
 
 import 'quill/dist/quill.core.css'
 import 'quill/dist/quill.snow.css'
@@ -149,7 +149,7 @@ export default {
   },
   methods: {
     async _getCategory() {
-      let res = await getData(`/category?pid=1`, '')
+      let res = await request(`/category?pid=1`, '')
       if (res.error_code === 10000) {
         res.data.map((item) => {
           this.options.push({
@@ -160,7 +160,7 @@ export default {
       }
     },
     async _create () {
-      let data = await getData('product', this.form, 'POST')
+      let data = await request('product', this.form, 'POST')
       if (data.error_code === 10000) {
         this.$message.success('添加成功')
       }

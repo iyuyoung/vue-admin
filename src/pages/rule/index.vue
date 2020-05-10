@@ -62,7 +62,7 @@
 </template>
 
 <script>
-import { getData } from '../../untils/js/request'
+import { request } from '../../untils/js/request'
 import store from '../../store'
 
 export default {
@@ -75,11 +75,11 @@ export default {
     }
   },
   created() {
-    this._getData()
+    this._request()
   },
   methods: {
-    async _getData() {
-      let data = await getData(`rule`)
+    async _request() {
+      let data = await request(`rule`)
       if (data.error_code === 10000) {
         this.data = data.data.data
         this.total = data.data.total
@@ -87,7 +87,7 @@ export default {
       }
     },
     async _del(id, key) {
-      let data = await getData(`/rule/${id}`, {}, 'delete')
+      let data = await request(`/rule/${id}`, {}, 'delete')
       if (data.error_code === 10000) {
         this.data.splice(key, 1)
         this.$message({
@@ -123,7 +123,7 @@ export default {
     },
     next(e) {
       this.page = e
-      this._getData()
+      this._request()
     },
   },
 }

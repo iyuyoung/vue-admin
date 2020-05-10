@@ -75,7 +75,7 @@
 </template>
 
 <script>
-import { getData } from "../../untils/js/request"
+import { request } from "../../untils/js/request"
 import store from '../../store';
 
 
@@ -108,24 +108,24 @@ export default {
     this.id = store.state.id
     this.headers.token = localStorage.getItem('token')
     this._getWorkshop()
-    this._getData()
+    this._request()
   },
   methods: {
     async _getWorkshop () {
-      let res = await getData('/workshop/index')
+      let res = await request('/workshop/index')
       if (res.error_code === 10000) {
         this.data = res.data.data
       }
     },
-    async _getData () {
-      let res = await getData(`/user/read/id/${this.id}`)
+    async _request () {
+      let res = await request(`/user/read/id/${this.id}`)
       if (res.error_code === 10000) {
         this.form = res.data
         this.avatar = [{ name: '用户头像', url: res.data.avatar }]
       }
     },
     async _create () {
-      let data = await getData(`/user/update/id/${this.id}`, this.form, 'POST')
+      let data = await request(`/user/update/id/${this.id}`, this.form, 'POST')
       if (data.error_code === 10000) {
         this.$message('修改成功')
       }

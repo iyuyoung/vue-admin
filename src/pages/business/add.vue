@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { getData } from '../../untils/js/request'
+import { request } from '../../untils/js/request'
 
 export default {
   components: {
@@ -82,7 +82,7 @@ export default {
   },
   methods: {
     async _create() {
-      let data = await getData('business', this.form, 'POST')
+      let data = await request('business', this.form, 'POST')
       if (data.error_code === 10000) {
         this.$message.success('添加成功')
         setTimeout({}, 1000)

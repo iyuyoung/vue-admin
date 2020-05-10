@@ -9,7 +9,7 @@
 </template>
 
 <script>
-import { getData } from '../../untils/js/request'
+import { request } from '../../untils/js/request'
 
 export default {
   name: 'user',
@@ -33,11 +33,11 @@ export default {
     }
   },
   mounted () {
-    this._getData()
+    this._request()
   },
   methods: {
-    async _getData () {
-      let data = await getData(`order/read/id/1`, {}, 'GET')
+    async _request () {
+      let data = await request(`order/read/id/1`, {}, 'GET')
       if (data.error_code === 10000) {
         this.chartData.rows = data.data
       }

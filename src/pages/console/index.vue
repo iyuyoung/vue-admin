@@ -35,7 +35,7 @@ import Index from '../server/index'
 import number from '../database/number'
 import Cpu from '../server/cpu'
 import User from '../charts/user'
-import { getData } from '../../untils/js/request'
+import { request } from '../../untils/js/request'
 
 export default {
   components: {
@@ -62,11 +62,11 @@ export default {
     }
   },
   created() {
-    this._getData()
+    this._request()
   },
   methods: {
-    async _getData() {
-      let res = await getData('record')
+    async _request() {
+      let res = await request('record')
       if (res.error_code === 10000) {
         this.list = res.data
       }

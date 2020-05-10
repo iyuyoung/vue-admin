@@ -190,7 +190,7 @@
               :label="item.name"
               :name="item.path"
               :lazy="true"
-              :closable="index === 0 ? false : false"
+              closable
             >
             </el-tab-pane>
           </el-tabs>
@@ -209,7 +209,7 @@
 
 <script>
 import store from '../store/index'
-import { getData } from '../untils/js/request'
+import { request } from '../untils/js/request'
 import router from '../router/index'
 export default {
   name: 'Index',
@@ -248,16 +248,13 @@ export default {
     }
   },
   methods: {
-    async _getData() {
-      let res = await getData('admin/findOne')
+    async _request() {
+      let res = await request('admin/findOne')
       if (res.error_code === 10000) {
         if (!res.data) {
           this.admin = true
         }
       }
-    },
-    capitalize() {
-      return true
     },
     addTab(path, title, id = 0) {
       this.defaultTab = path
@@ -299,14 +296,8 @@ export default {
         })
     },
     // 关闭标签
-    removeTab(targetName) {
-      let tabs = this.tabs
-      router.push({
-        path: '/',
-        name: '主页'
-      })
-      this.defaultTab = '/'
-      this.tabs = tabs.filter(tab => tab.name !== targetName)
+    removeTab(path) {
+      store.commit('close_tab',path)
     }
   }
 }
@@ -439,7 +430,7 @@ export default {
         position: initial;
         padding-left: 0px !important;
         .el-tabs__item {
-          padding: 0 20px;
+          padding: 0px 20px !important;
           height: 40px;
           -webkit-box-sizing: border-box;
           box-sizing: border-box;
@@ -453,6 +444,21 @@ export default {
           border-left: 1px solid #f2f2f2;
           color: #999;
           position: relative;
+          .el-icon-close{
+            position: absolute;
+            top: 13px;
+            right: 3px;
+          }
+          &:first-child{
+              .el-icon-close{
+                width: 0px;
+              }
+              &:hover {
+                .el-icon-close{
+                    width: 0px;
+                }
+              }
+            }
           &::before {
             content: '';
             position: absolute;

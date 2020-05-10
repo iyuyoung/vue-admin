@@ -183,7 +183,7 @@
 </template>
 
 <script>
-import { getData } from '../../untils/js/request'
+import { request } from '../../untils/js/request'
 
 export default {
   name: 'index',
@@ -202,11 +202,11 @@ export default {
     }
   },
   created() {
-    this._getData()
+    this._request()
   },
   methods: {
-    async _getData() {
-      let data = await getData(
+    async _request() {
+      let data = await request(
         `/user?page=${this.page}&username=${this.username}`,
         ''
       )
@@ -219,33 +219,33 @@ export default {
       }
     },
     async _getChicken() {
-      let res = await getData(`chickenlog?userid=${this.userid}`)
+      let res = await request(`chickenlog?userid=${this.userid}`)
       if (res.error_code === 10000) {
         this.chicken = res.data.data
       }
     },
     async _getEgg() {
-      let res = await getData(`egglog?userid=${this.userid}`)
+      let res = await request(`egglog?userid=${this.userid}`)
       if (res.error_code === 10000) {
         this.egg = res.data.data
       }
     },
     async _getForage() {
-      let res = await getData(`foragelog?userid=${this.userid}`)
+      let res = await request(`foragelog?userid=${this.userid}`)
       if (res.error_code === 10000) {
         this.forage = res.data.data
       }
     },
     change(e) {
       this.page = e
-      this._getData()
+      this._request()
     },
     search() {
       if (!this.username.trim().length) {
         this.$message.error('用户名不能为空')
         return false
       }
-      this._getData()
+      this._request()
     },
     show(param, userid) {
       this.userid = userid
@@ -261,7 +261,7 @@ export default {
     refresh() {
       this.page = 1
       this.title = ''
-      this._getData()
+      this._request()
     },
   },
 }

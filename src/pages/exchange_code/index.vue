@@ -127,7 +127,7 @@
 </template>
 
 <script>
-import { getData } from '../../untils/js/request'
+import { request } from '../../untils/js/request'
 import store from '../../store'
 
 export default {
@@ -143,11 +143,11 @@ export default {
     }
   },
   created() {
-    this._getData()
+    this._request()
   },
   methods: {
-    async _getData() {
-      let res = await getData(`/code?code=${this.code}`, '')
+    async _request() {
+      let res = await request(`/code?code=${this.code}`, '')
       if (res.error_code === 10000) {
         this.data = res.data.data
         this.total = res.data.total
@@ -158,11 +158,11 @@ export default {
       this.exchange = true
     },
     async _create() {
-      let data = await getData('code', this.form, 'POST')
+      let data = await request('code', this.form, 'POST')
       if (data.error_code === 10000) {
         this.$message.success('添加成功')
         this.exchange = false
-        this._getData()
+        this._request()
       }
     },
     onSubmit() {
@@ -175,11 +175,11 @@ export default {
     },
     next(e) {
       this.page = e
-      this._getData()
+      this._request()
     },
     search() {
       if (this.code) {
-        this._getData()
+        this._request()
       } else {
         this.$message.error('兑换码不能为空')
       }

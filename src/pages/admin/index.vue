@@ -69,7 +69,7 @@
 
 <script>
 import router from '../../router/index'
-import { getData } from "../../untils/js/request";
+import { request } from "../../untils/js/request";
 import store from '../../store';
 
 export default {
@@ -82,11 +82,11 @@ export default {
     }
   },
   created () {
-    this._getData()
+    this._request()
   },
   methods: {
-    async _getData () {
-      let data = await getData(`/admin/index`, '')
+    async _request () {
+      let data = await request(`/admin/index`, '')
       if (data.error_code === 10000) {
         this.data = data.data.data
       }
@@ -97,7 +97,7 @@ export default {
       });
     },
     async _del (id, key) {
-      let data = await getData(`admin/delete?id=${id}`, {}, 'delete')
+      let data = await request(`admin/delete?id=${id}`, {}, 'delete')
       if (data.error_code === 10000) {
         this.data.splice(key, 1)
         this.$message({
@@ -127,7 +127,7 @@ export default {
       store.commit('add_tabs', { path: 'edit-admin', name: '编辑管理员' })
     },
     async _password (id, text) {
-      let data = await getData(`/admin/update?id=${id}`, { 'password': text }, 'POST')
+      let data = await request(`/admin/update?id=${id}`, { 'password': text }, 'POST')
       if (data.error_code === 10000) {
         localStorage.removeItem('token')
         router.push({ path: '/login', name: '登录' })
@@ -167,7 +167,7 @@ export default {
     },
     next (e) {
       this.page = e
-      this._getData()
+      this._request()
     }
   }
 

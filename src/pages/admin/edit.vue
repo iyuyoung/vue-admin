@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { getData } from "../../untils/js/request"
+import { request } from "../../untils/js/request"
 import store from '../../store';
 
 
@@ -62,18 +62,18 @@ export default {
   },
   mounted () {
     this.id = store.state.id
-    this._getData()
+    this._request()
     this.getWorkshop()
   },
   methods: {
-    async _getData () {
-      let res = await getData(`admin/read/id/${this.id}`)
+    async _request () {
+      let res = await request(`admin/read/id/${this.id}`)
       if (res.error_code === 10000) {
         this.form = res.data
       }
     },
     async getWorkshop () {
-      let res = await getData('workshop')
+      let res = await request('workshop')
       if (res.error_code === 10000) {
         let data = res.data.data
         data.push({ 'id': 0, 'title': '全部' })
@@ -81,7 +81,7 @@ export default {
       }
     },
     async _create () {
-      let data = await getData(`/admin/update/id/${this.id}`, this.form, 'POST')
+      let data = await request(`/admin/update/id/${this.id}`, this.form, 'POST')
       if (data.error_code === 10000) {
         this.$message('修改成功')
       }

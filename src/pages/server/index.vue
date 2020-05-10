@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { getData } from '../../untils/js/request'
+import { request } from '../../untils/js/request'
 export default {
   name: 'index',
   data() {
@@ -28,11 +28,11 @@ export default {
     }
   },
   created() {
-    this._getData()
+    this._request()
   },
   methods: {
-    async _getData() {
-      let data = await getData('/index/console')
+    async _request() {
+      let data = await request('/index/console')
       if (data.error_code === 10000) {
         this.data = data.data
       }

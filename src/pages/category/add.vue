@@ -74,7 +74,7 @@
 </template>
 
 <script>
-import { getData } from '../../untils/js/request'
+import { request } from '../../untils/js/request'
 import store from '../../store'
 
 export default {
@@ -102,11 +102,11 @@ export default {
   },
   mounted() {
     this.headers.token = localStorage.getItem('token')
-    this._getData()
+    this._request()
   },
   methods: {
-    async _getData() {
-      let res = await getData('/category?pid=1')
+    async _request() {
+      let res = await request('/category?pid=1')
       if (res.error_code === 10000) {
         res.data.map((item) => {
           this.options.push(item)
@@ -114,7 +114,7 @@ export default {
       }
     },
     async _create() {
-      let data = await getData('/category', this.form, 'POST')
+      let data = await request('/category', this.form, 'POST')
       if (data.error_code === 10000) {
         this.$message.success('添加成功')
         setTimeout(()=>{

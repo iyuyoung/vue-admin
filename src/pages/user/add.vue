@@ -69,7 +69,7 @@
 </template>
 
 <script>
-import { getData } from "../../untils/js/request"
+import { request } from "../../untils/js/request"
 
 
 export default {
@@ -100,13 +100,13 @@ export default {
   },
   methods: {
     async _getWorkshop () {
-      let res = await getData('/workshop/index?pid=1')
+      let res = await request('/workshop/index?pid=1')
       if (res.error_code === 10000) {
         this.data = res.data.data
       }
     },
     async _create () {
-      let data = await getData('/user/save/', this.form, 'POST')
+      let data = await request('/user/save/', this.form, 'POST')
       if (data.error_code === 10000) {
         this.$message('添加成功')
       }

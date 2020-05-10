@@ -9,7 +9,7 @@
               <div class="input-group">
                 <input
                   type="text"
-                  v-model="form.username"
+                  v-model="form.account"
                   required="required"
                   placeholder="用户名"
                 />
@@ -52,21 +52,21 @@
 </template>
 <script>
 import router from '../router/index'
-import { getData } from '../untils/js/request'
+import { request } from '../untils/js/request'
 export default {
   name: 'login',
   data() {
     return {
-      form: { username: '', password: '' },
+      form: { account: '', password: '' },
     }
   },
   methods: {
     async _login() {
-      let res = await getData('/login', this.form, 'POST')
+      let res = await request('/login', this.form, 'POST')
       if (res.error_code === 10000) {
         this.$message.success('登录成功')
         localStorage.setItem('token', res.data)
-        localStorage.setItem('username', this.form.username)
+        localStorage.setItem('username', this.form.account)
         router.push({ path: '/', name: '主页' })
         window.location.reload()
       } else {
@@ -75,7 +75,7 @@ export default {
     },
     // 用户登录
     login() {
-      if (!this.form.username.trim().length) {
+      if (!this.form.account.trim().length) {
         this.$message.error('用户名不能为空')
         return false
       } else if (!this.form.password.trim().length) {

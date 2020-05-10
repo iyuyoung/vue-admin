@@ -33,7 +33,7 @@
 </template>
 
 <script>
-import { getData } from "../../untils/js/request"
+import { request } from "../../untils/js/request"
 import store from '../../store';
 
 
@@ -52,17 +52,17 @@ export default {
   },
   mounted () {
     this.id = store.state.id
-    this._getData()
+    this._request()
   },
   methods: {
-    async _getData () {
-      let res = await getData(`/rule/${this.id}`)
+    async _request () {
+      let res = await request(`/rule/${this.id}`)
       if (res.error_code === 10000) {
         this.form = res.data
       }
     },
     async _create () {
-      let data = await getData(`/rule/${this.id}`, this.form, 'PUT')
+      let data = await request(`/rule/${this.id}`, this.form, 'PUT')
       if (data.error_code === 10000) {
         this.$message.success('修改成功')
       }

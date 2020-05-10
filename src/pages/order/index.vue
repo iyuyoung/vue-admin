@@ -111,7 +111,7 @@
 </template>
 
 <script>
-import { getData } from '../../untils/js/request'
+import { request } from '../../untils/js/request'
 import store from '../../store'
 
 export default {
@@ -126,11 +126,11 @@ export default {
     }
   },
   created() {
-    this._getData()
+    this._request()
   },
   methods: {
-    async _getData() {
-      let res = await getData(`/order?username=${this.username}`, '')
+    async _request() {
+      let res = await request(`/order?username=${this.username}`, '')
       if (res.error_code === 10000) {
         this.data = res.data.data
         this.total = res.data.total
@@ -138,7 +138,7 @@ export default {
       }
     },
     async _del(id, key) {
-      let data = await getData(`order/delete?id=${id}`, {}, 'delete')
+      let data = await request(`order/delete?id=${id}`, {}, 'delete')
       if (data.error_code === 10000) {
         this.data.splice(key, 1)
         this.$message({
@@ -171,11 +171,11 @@ export default {
     },
     next(e) {
       this.page = e
-      this._getData()
+      this._request()
     },
     search() {
       if (this.username) {
-        this._getData()
+        this._request()
       } else {
         this.$message.error('用户名称不能为空')
       }

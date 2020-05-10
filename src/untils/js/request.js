@@ -1,11 +1,16 @@
-import { DEV_URL, BASE_URL } from './common'
+import {
+    DEV_URL,
+    BASE_URL
+} from './common'
+
 
 //引入fly实例
 var fly = require("flyio")
 // loading
 var load = ''
 import {
-    Loading
+    Loading,
+    Message
 } from 'element-ui'
 // 配置请求基地址
 fly.config.baseURL = process.env.NODE_ENV == 'development' ? DEV_URL : BASE_URL
@@ -30,6 +35,11 @@ fly.interceptors.response.use(
         if (err.response.data.error_code === 9999) {
             localStorage.clear()
             window.location.reload()
+        } else {
+            Message({
+                message: err.response.data.msg,
+                type: 'error'
+            })
         }
         load.close()
         return promise.resolve()
@@ -43,7 +53,7 @@ fly.interceptors.response.use(
  * @param method
  * @returns {FlyPromise<any>}
  */
-export function getData(url, data, method = 'GET') {
+export function request(url, data, method = 'GET') {
     return fly.request(url, data, {
         'method': method
     })

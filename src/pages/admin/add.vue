@@ -48,7 +48,7 @@
 </template>
 
 <script>
-import { getData } from "../../untils/js/request"
+import { request } from "../../untils/js/request"
 
 
 export default {
@@ -72,7 +72,7 @@ export default {
   },
   methods: {
     async getWorkshop () {
-      let res = await getData('workshop')
+      let res = await request('workshop')
       if (res.error_code === 10000) {
         let data = res.data.data
         data.push({ 'id': 0, 'title': '全部' })
@@ -80,7 +80,7 @@ export default {
       }
     },
     async _create () {
-      let data = await getData('/admin/save/', this.form, 'POST')
+      let data = await request('/admin/save/', this.form, 'POST')
       if (data.error_code === 10000) {
         this.$message('添加成功')
       }

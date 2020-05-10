@@ -1,6 +1,5 @@
 import vue from 'vue'
 import Vuex from 'vuex'
-import route from '../router/index'
 
 vue.use(Vuex)
 const store = new Vuex.Store({
@@ -30,7 +29,6 @@ const store = new Vuex.Store({
                     status = false
                 }
             }
-            route.push(data)
             this.state.active = data.path
             if (status) {
                 this.state.path.push(data)
@@ -40,6 +38,31 @@ const store = new Vuex.Store({
         set_active_index(state, index) {
             this.state.active = index
         },
+        // 关闭tab
+        close_tab(state, path) {
+            let tabs = this.state.path
+            let activeTab = path;
+            let activeName = '';
+            let index = 0;
+            if (activeTab === path) {
+                tabs.forEach((tab, key) => {
+                    if (tab.path === path) {
+                        let nextTab = tabs[key + 1] || tabs[key - 1];
+                        if (nextTab) {
+                            activeTab = nextTab.path;
+                            activeName = nextTab.name
+                        }
+                        index = key
+                    }
+                });
+            }
+            this.state.active = activeTab
+            store.commit('add_tabs', {
+                path: activeTab,
+                name: activeName
+            })
+            this.state.path.splice(index, 1);
+        }
     }
 })
 

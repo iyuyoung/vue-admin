@@ -71,7 +71,7 @@
 </template>
 
 <script>
-import { getData } from '../../untils/js/request'
+import { request } from '../../untils/js/request'
 import store from '../../store'
 
 export default {
@@ -94,14 +94,14 @@ export default {
   },
   methods: {
     async _getOne() {
-      let res = await getData(`business/${this.id}`)
+      let res = await request(`business/${this.id}`)
       if (res.error_code === 10000) {
         this.form = res.data
         this.image[0]['url'] = res.data.logo
       }
     },
     async _create() {
-      let data = await getData(`business/${this.id}`, this.form, 'PUT')
+      let data = await request(`business/${this.id}`, this.form, 'PUT')
       if (data.error_code === 10000) {
         this.$message.success('修改成功')
         setTimeout({}, 1000)

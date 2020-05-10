@@ -100,7 +100,7 @@
 </template>
 
 <script>
-import { getData } from '../../untils/js/request'
+import { request } from '../../untils/js/request'
 import store from '../../store'
 
 export default {
@@ -114,11 +114,11 @@ export default {
     }
   },
   created() {
-    this._getData()
+    this._request()
   },
   methods: {
-    async _getData() {
-      let res = await getData(`/business?page=${this.page}&title=${this.title}`)
+    async _request() {
+      let res = await request(`/business?page=${this.page}&title=${this.title}`)
       if (res.error_code === 10000) {
         this.data = res.data.data
         this.total = res.data.total
@@ -129,7 +129,7 @@ export default {
       store.commit('add_tabs', { path: 'add-business', name: '添加商家' })
     },
     async _change(id, key, status) {
-      let res = await getData(
+      let res = await request(
         `/business/${id}`,
         { status: status },
         'PUT'
@@ -142,7 +142,7 @@ export default {
       }
     },
     async _detele(id, key) {
-      let res = await getData(`/business/${id}`,'','DELETE')
+      let res = await request(`/business/${id}`,'','DELETE')
       if (res.error_code === 10000) {
         this.$message('删除成功')
         this.data.splice(key, 1)
@@ -173,11 +173,11 @@ export default {
     },
     handleCurrentChange(e) {
       this.page = e
-      this._getData()
+      this._request()
     },
     search() {
       if (this.title) {
-        this._getData()
+        this._request()
       } else {
         this.$message('商家标题不能为空')
       }

@@ -133,7 +133,7 @@
 </template>
 
 <script>
-import { getData } from '../../untils/js/request'
+import { request } from '../../untils/js/request'
 import store from '../../store'
 export default {
   name: 'index',
@@ -149,12 +149,12 @@ export default {
     }
   },
   created() {
-    this._getData()
+    this._request()
     this._getCategory()
   },
   methods: {
-    async _getData() {
-      let res = await getData(
+    async _request() {
+      let res = await request(
         `/product?page=${this.page}&title=${this.title}&category=${
           this.category
         }`
@@ -170,7 +170,7 @@ export default {
       }
     },
     async _getCategory() {
-      let res = await getData(`/category?pid=1`, '')
+      let res = await request(`/category?pid=1`, '')
       if (res.error_code === 10000) {
         res.data.map((item) => {
           this.options.push({
@@ -185,7 +185,7 @@ export default {
       this.defaultTab = this.$route.path
     },
     async _change(id, key, status) {
-      let res = await getData(`/product/${id}`, { status: status }, 'PUT')
+      let res = await request(`/product/${id}`, { status: status }, 'PUT')
       if (res.error_code === 10000) {
         this.data[key]['status'] = status
         this.$message('修改成功')
@@ -194,7 +194,7 @@ export default {
       }
     },
     async _changeAll(status) {
-      let res = await getData(
+      let res = await request(
         `/product/updateAll`,
         { status: status, id: this.idAll },
         'POST'
@@ -206,7 +206,7 @@ export default {
       }
     },
     async _detele(id, key) {
-      let res = await getData(`/product/${id}`, '', 'DELETE')
+      let res = await request(`/product/${id}`, '', 'DELETE')
       if (res.error_code === 10000) {
         this.$message('删除成功')
         this.data.splice(key, 1)
@@ -236,18 +236,18 @@ export default {
     },
     handleCurrentChange(e) {
       this.page = e
-      this._getData()
+      this._request()
     },
     search() {
       if (this.title || this.category) {
-        this._getData()
+        this._request()
       } else {
         this.$message('商品标题不能为空')
       }
     },
     refresh() {
       this.page = 1
-      this._getData()
+      this._request()
     },
   },
 }

@@ -114,7 +114,7 @@
 </template>
 
 <script>
-import { getData } from '../../untils/js/request'
+import { request } from '../../untils/js/request'
 import store from '../../store'
 
 export default {
@@ -129,11 +129,11 @@ export default {
     }
   },
   created() {
-    this._getData()
+    this._request()
   },
   methods: {
-    async _getData() {
-      let res = await getData(`/category?page=${this.page}&title=${this.title}`)
+    async _request() {
+      let res = await request(`/category?page=${this.page}&title=${this.title}`)
       if (res.error_code === 10000) {
         this.data = res.data.data
         this.total = res.data.total
@@ -145,7 +145,7 @@ export default {
       store.commit('add_tabs', { path: 'add-category', name: '添加分类' })
     },
     async _change(id, form, key) {
-      let res = await getData(`/category/${id}`, form, 'PUT')
+      let res = await request(`/category/${id}`, form, 'PUT')
       if (res.error_code === 10000) {
         let value = Object.keys(form)[0]
         if (value === 'status') {
@@ -157,7 +157,7 @@ export default {
       }
     },
     async _detele(id, key) {
-      let res = await getData(`/category/${id}`, '', 'DELETE')
+      let res = await request(`/category/${id}`, '', 'DELETE')
       if (res.error_code === 10000) {
         this.$message('删除成功')
         this.data.splice(key, 1)
@@ -190,11 +190,11 @@ export default {
     },
     handleCurrentChange(e) {
       this.page = e
-      this._getData()
+      this._request()
     },
     search() {
       if (this.title) {
-        this._getData()
+        this._request()
       } else {
         this.$message.error('标题不能为空')
       }
@@ -202,7 +202,7 @@ export default {
     refresh() {
       this.page = 1
       this.title = ''
-      this._getData()
+      this._request()
     },
   },
 }
