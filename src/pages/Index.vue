@@ -90,9 +90,7 @@
                   <span>兑换列表</span>
                 </template>
                 <el-menu-item-group>
-                  <el-menu-item
-                    index="6-1"
-                    @click="addTab('/code', '兑换码')"
+                  <el-menu-item index="6-1" @click="addTab('/code', '兑换码')"
                     >兑换码</el-menu-item
                   >
                 </el-menu-item-group>
@@ -109,10 +107,28 @@
                     @click="addTab('/admin', '管理员设置')"
                     >管理员设置</el-menu-item
                   >
-                  <el-menu-item
-                    index="7-2"
-                    @click="addTab('/rule', '规则设置')"
+                  <el-menu-item index="7-2" @click="addTab('/rule', '规则设置')"
                     >规则设置</el-menu-item
+                  >
+                </el-menu-item-group>
+              </el-submenu>
+              <!-- 权限管理 -->
+              <el-submenu index="8">
+                <template slot="title">
+                  <i class="el-icon-setting"></i>
+                  <span>权限管理</span>
+                </template>
+                <el-menu-item-group>
+                  <el-menu-item
+                    index="8-1"
+                    @click="addTab('/staff', '管理员列表')"
+                    >管理员列表</el-menu-item
+                  >
+                  <el-menu-item index="8-2" @click="addTab('/rule', '权限菜单')"
+                    >权限菜单</el-menu-item
+                  >
+                  <el-menu-item index="8-3" @click="addTab('/auth-role', '角色管理')"
+                    >角色管理</el-menu-item
                   >
                 </el-menu-item-group>
               </el-submenu>
@@ -134,7 +150,7 @@
                   <i
                     :class="{
                       'el-icon-s-fold': !isCollapse,
-                      'el-icon-s-unfold': isCollapse
+                      'el-icon-s-unfold': isCollapse,
                     }"
                   ></i>
                 </span>
@@ -211,6 +227,7 @@
 import store from '../store/index'
 import { request } from '../untils/js/request'
 import router from '../router/index'
+import { closeTab } from '../untils/js/common'
 export default {
   name: 'Index',
   data() {
@@ -219,7 +236,7 @@ export default {
       out: false,
       username: 'admin',
       defaultTab: store.state.active,
-      tabs: store.state.path
+      tabs: store.state.path,
     }
   },
   computed: {
@@ -229,20 +246,20 @@ export default {
       },
       set(value) {
         this.defaultTab = value
-      }
-    }
+      },
+    },
   },
   watch: {
     name() {
       this.username = localStorage.getItem('username')
-    }
+    },
   },
   mounted() {
     // 页面刷新打开当前路由tab
     if (this.$route.path !== '/') {
       store.commit('add_tabs', {
         path: this.$route.path,
-        name: this.$route.name
+        name: this.$route.name,
       })
       this.defaultTab = this.$route.path
     }
@@ -265,7 +282,7 @@ export default {
       this.defaultTab = tab.$attrs.path
       store.commit('add_tabs', {
         path: tab.$attrs.path,
-        name: tab.$attrs.title
+        name: tab.$attrs.title,
       })
     },
     // 刷新
@@ -281,7 +298,7 @@ export default {
       this.$confirm('此操作将退出登陆, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
-        type: 'warning'
+        type: 'warning',
       })
         .then(() => {
           localStorage.removeItem('token')
@@ -291,15 +308,15 @@ export default {
         .catch(() => {
           this.$message({
             type: 'info',
-            message: '已取消'
+            message: '已取消',
           })
         })
     },
     // 关闭标签
     removeTab(path) {
-      store.commit('close_tab',path)
-    }
-  }
+      closeTab(path)
+    },
+  },
 }
 </script>
 
@@ -444,21 +461,21 @@ export default {
           border-left: 1px solid #f2f2f2;
           color: #999;
           position: relative;
-          .el-icon-close{
+          .el-icon-close {
             position: absolute;
             top: 13px;
             right: 3px;
           }
-          &:first-child{
-              .el-icon-close{
+          &:first-child {
+            .el-icon-close {
+              width: 0px;
+            }
+            &:hover {
+              .el-icon-close {
                 width: 0px;
               }
-              &:hover {
-                .el-icon-close{
-                    width: 0px;
-                }
-              }
             }
+          }
           &::before {
             content: '';
             position: absolute;

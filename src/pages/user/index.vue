@@ -19,7 +19,7 @@
         <!--搜索-->
         <div class="search">
           <el-input
-            placeholder="请输入用户名或手机号"
+            placeholder="请输入用户名|手机号|邮箱"
             v-model="username"
             class="input-with-select"
           >
@@ -28,82 +28,6 @@
             >
           </el-input>
         </div>
-
-        <!-- 查看鸡的数量 -->
-        <el-dialog
-          title="鸡的记录"
-          :visible.sync="layer.chicken"
-          :append-to-body="true"
-        >
-          <el-table :data="chicken">
-            <el-table-column
-              property="pid"
-              label="来源"
-              width="150"
-            ></el-table-column>
-            <el-table-column
-              property="title"
-              label="数量"
-              width="200"
-            ></el-table-column>
-            <el-table-column
-              property="update_time"
-              label="操作时间"
-            ></el-table-column>
-          </el-table>
-        </el-dialog>
-
-        <!-- 查看鸡蛋的数量 -->
-        <el-dialog
-          title="鸡蛋的记录"
-          :visible.sync="layer.egg"
-          :append-to-body="true"
-        >
-          <el-table :data="egg">
-            <el-table-column
-              property="remark"
-              label="来源"
-              width="150"
-            ></el-table-column>
-            <el-table-column
-              property="title"
-              label="标题"
-              width="200"
-            ></el-table-column>
-            <el-table-column
-              property="number"
-              label="数量"
-              width="100"
-            ></el-table-column>
-            <el-table-column
-              property="update_time"
-              label="操作时间"
-            ></el-table-column>
-          </el-table>
-        </el-dialog>
-
-        <!-- 查看喂养的数量 -->
-        <el-dialog
-          title="喂养的记录"
-          :visible.sync="layer.forage"
-          :append-to-body="true"
-        >
-          <el-table :data="forage">
-            <el-table-column
-              property="id"
-              label="ID"
-              width="100"
-            ></el-table-column>
-            <el-table-column
-              property="remark"
-              label="备注信息"
-            ></el-table-column>
-            <el-table-column
-              property="create_time"
-              label="签到时间"
-            ></el-table-column>
-          </el-table>
-        </el-dialog>
 
         <!--添加-->
         <div class="create">
@@ -173,7 +97,7 @@
           background
           :page-size="pageSize"
           layout="prev, pager, next"
-          @current-change="change"
+          @current-change="handle_page"
           :total="total"
         >
         </el-pagination>
@@ -191,14 +115,9 @@ export default {
     return {
       username: '',
       page: 1,
-      userid: 0,
       pageSize: 20,
       total: 0,
-      layer: { chicken: false, egg: false, forage: false },
       data: [],
-      chicken: [],
-      egg: [],
-      forage: [],
     }
   },
   created() {
@@ -206,37 +125,17 @@ export default {
   },
   methods: {
     async _request() {
-      let data = await request(
-        `/user?page=${this.page}&username=${this.username}`,
-        ''
+      let res = await request(
+        `staff?page=${this.page}&username=${this.username}`
       )
-      if (data.error_code === 10000) {
-        this.data = data.data.data.map((item) => {
-          item.create_time = item.create_time.substring(0, 10)
-          return item
-        })
-        this.total = data.data.total
-      }
-    },
-    async _getChicken() {
-      let res = await request(`chickenlog?userid=${this.userid}`)
       if (res.error_code === 10000) {
-        this.chicken = res.data.data
+        this.data = res.data.data
+        this.page = res.data.total
+        this.pageSize = res.data.total
+        this.total = res.data.total
       }
     },
-    async _getEgg() {
-      let res = await request(`egglog?userid=${this.userid}`)
-      if (res.error_code === 10000) {
-        this.egg = res.data.data
-      }
-    },
-    async _getForage() {
-      let res = await request(`foragelog?userid=${this.userid}`)
-      if (res.error_code === 10000) {
-        this.forage = res.data.data
-      }
-    },
-    change(e) {
+    handle_page(e) {
       this.page = e
       this._request()
     },
@@ -246,17 +145,6 @@ export default {
         return false
       }
       this._request()
-    },
-    show(param, userid) {
-      this.userid = userid
-      this.layer[param] = true
-      if (param === 'chicken') {
-        this._getChicken()
-      } else if (param === 'egg') {
-        this._getEgg()
-      } else {
-        this._getForage()
-      }
     },
     refresh() {
       this.page = 1

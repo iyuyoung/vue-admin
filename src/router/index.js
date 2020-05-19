@@ -1,9 +1,24 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import login from '../pages/login'
+
 import index from '../pages/console/index'
 import user from '../pages/user/index'
 import editUser from '../pages/user/edit'
+
+import staff from '../pages/staff/index'
+import add_staff from '../pages/staff/add'
+import edit_staff from '../pages/staff/edit'
+
+import auth_menu from '../pages/auth_menu/index'
+import add_auth_menu from '../pages/auth_menu/add'
+import edit_auth_menu from '../pages/auth_menu/edit'
+
+import auth_role from '../pages/auth_role/index'
+import add_auth_role from '../pages/auth_role/add'
+import edit_auth_role from '../pages/auth_role/edit'
+
+
 import business from '../pages/business/index'
 import addBusiness from '../pages/business/add'
 import editBusiness from '../pages/business/edit'
@@ -35,6 +50,72 @@ const router = new VueRouter({
             component: index,
             meta: {
                 keepAlive: true
+            }
+        },
+        {
+            path: '/staff',
+            name: '管理员列表',
+            component: staff,
+            meta: {
+                keepAlive: true
+            }
+        }, {
+            path: '/add-staff',
+            name: '添加管理员',
+            component: add_staff,
+            meta: {
+                keepAlive: false
+            }
+        }, {
+            path: '/edit-staff',
+            name: '编辑管理员',
+            component: edit_staff,
+            meta: {
+                keepAlive: false
+            }
+        },
+        {
+            path: '/auth-menu',
+            name: '权限菜单',
+            component: auth_menu,
+            meta: {
+                keepAlive: true
+            }
+        }, {
+            path: '/add-authmenu',
+            name: '添加权限菜单',
+            component: add_auth_menu,
+            meta: {
+                keepAlive: false
+            }
+        }, {
+            path: '/edit-auth-menu',
+            name: '编辑权限菜单',
+            component: edit_auth_menu,
+            meta: {
+                keepAlive: false
+            }
+        },
+        {
+            path: '/auth-role',
+            name: '角色管理',
+            component: auth_role,
+            meta: {
+                keepAlive: true
+            }
+        }, {
+            path: '/add-auth-role',
+            name: '添加角色',
+            component: add_auth_role,
+            meta: {
+                keepAlive: false
+            }
+        }, {
+            path: '/edit-auth-role',
+            name: '编辑角色',
+            component: edit_auth_role,
+            meta: {
+                keepAlive: false
             }
         },
         {

@@ -12,6 +12,7 @@ a{text-decoration:none;}
 .router{box-sizing:border-box;width:100%;min-height:100vh;background:#f4f4f4;margin-top:35px;}
 .card{margin-bottom:15px;padding:7.5px;border-radius:2px;background-color:#fff;box-shadow:0 1px 2px 0 rgba(0,0,0,.05);width:100%}
 .card-header{padding:0 15px;height:42px;border-bottom:1px solid #f6f6f6;border-radius:2px 2px 0 0;color:#333;font-size:14px;line-height:42px!important;}
+.card-header .tag{font-size: 18px;font-weight: 500;color: #666;}
 .card-body{padding:10px 15px;}
 table{width:100%;border-collapse:collapse;background-color:#fff;color:#666;border-spacing:0;}
 .el-breadcrumb{line-height:42px!important;}
@@ -27,8 +28,10 @@ table td:last-child{border-right:1px solid #e6e6e6;}
 .ql-container.ql-snow{height:300px;border:1px solid #dcdfe5;border-radius:0 0 4px 4px;}
 .search{margin:15px auto;margin-bottom:10px;max-width:500px;}
 .create{display:flex;box-sizing:border-box;margin-top:20px;padding:0 15px;width:100%;font-size:15px;line-height:40px;justify-content:space-between;}
+.el-popover {height: 500px !important;overflow-y: scroll;}
 .page{display:flex;width:100%;}
 .el-pagination{margin:auto;}
+.el-table__row--level-0{background-color:#f0f9eb !important}
 .brand{color: #409EFF;}
 .success{color: #67C23A;}
 .warning{color: #E6A23C;}

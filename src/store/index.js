@@ -1,5 +1,6 @@
 import vue from 'vue'
 import Vuex from 'vuex'
+import router from '../router'
 
 vue.use(Vuex)
 const store = new Vuex.Store({
@@ -29,6 +30,7 @@ const store = new Vuex.Store({
                     status = false
                 }
             }
+            router.push(data)
             this.state.active = data.path
             if (status) {
                 this.state.path.push(data)
@@ -41,8 +43,8 @@ const store = new Vuex.Store({
         // 关闭tab
         close_tab(state, path) {
             let tabs = this.state.path
-            let activeTab = path;
-            let activeName = '';
+            let activeTab = path
+            let activeName = ''
             let index = 0;
             if (activeTab === path) {
                 tabs.forEach((tab, key) => {
