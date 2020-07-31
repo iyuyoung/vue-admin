@@ -19,7 +19,7 @@
         <!--搜索-->
         <div class="search">
           <el-input
-            placeholder="请输入用户名|手机号|邮箱"
+            placeholder="请输入用户名、手机号、邮箱"
             v-model="username"
             class="input-with-select"
           >
@@ -37,8 +37,6 @@
         <div class="card-body text">
           <el-table :data="data" style="width: 100%">
             <el-table-column prop="id" label="ID" width="80"> </el-table-column>
-            <el-table-column prop="pid_name" label="推荐人" width="150">
-            </el-table-column>
             <el-table-column label="用户头像" width="100">
               <template slot-scope="scope">
                 <el-avatar
@@ -47,46 +45,47 @@
                 ></el-avatar>
               </template>
             </el-table-column>
-            <el-table-column prop="username" label="名称"> </el-table-column>
+            <el-table-column prop="nickname" label="名称"> </el-table-column>
             <el-table-column prop="phone" label="手机号" width="150">
             </el-table-column>
-            <el-table-column prop="chicken_number" width="100" label="鸡的数量">
+            <el-table-column prop="login_ip" width="160" label="登录IP">
               <template slot-scope="scope">
                 <span
-                  v-if="scope.row.chicken_number"
-                  @click="show('chicken', scope.row.id)"
-                  class="brand"
-                  style="cursor: pointer;"
-                  v-text="scope.row.chicken_number"
+                  v-if="scope.row.login_ip"
+                  v-text="scope.row.login_ip"
                 ></span>
-                <span class="info" v-else>0</span>
+                <span v-else>暂未登录</span>
               </template>
             </el-table-column>
-            <el-table-column prop="egg_number" width="100" label="蛋的数量">
+            <el-table-column prop="login_time" width="160" label="登录时间">
+            </el-table-column>
+            <el-table-column prop="create_time" width="160" label="注册时间">
+            </el-table-column>
+            <el-table-column prop="status" width="120" label="状态">
               <template slot-scope="scope">
-                <span
-                  v-if="scope.row.egg_number"
-                  @click="show('egg', scope.row.id)"
-                  class="danger"
-                  style="cursor: pointer;"
-                  v-text="scope.row.egg_number"
-                ></span>
-                <span class="info" v-else>0</span>
+                <span v-if="scope.row.status" class="primary">已启用</span>
+                <span v-else class="info">已停用</span>
               </template>
             </el-table-column>
-            <el-table-column prop="sign_number" width="100" label="签到天数">
+            <el-table-column width="160" label="操作">
               <template slot-scope="scope">
-                <span
-                  v-if="scope.row.sign_number"
-                  @click="show('forage', scope.row.id)"
-                  class="success"
-                  style="cursor: pointer;"
-                  v-text="scope.row.sign_number"
-                ></span>
-                <span class="info" v-else>0</span>
+                <el-button
+                  size="mini"
+                  type="primary"
+                  icon="el-icon-top"
+                  v-if="!scope.row.status"
+                  title="启用"
+                  @click="change(scope.row.id, scope.$index, 1)"
+                ></el-button>
+                <el-button
+                  size="mini"
+                  type="danger"
+                  icon="el-icon-bottom"
+                  v-else
+                  title="停用"
+                  @click="change(scope.row.id, scope.$index, 0)"
+                ></el-button>
               </template>
-            </el-table-column>
-            <el-table-column prop="create_time" width="120" label="注册时间">
             </el-table-column>
           </el-table>
         </div>
@@ -126,7 +125,7 @@ export default {
   methods: {
     async _request() {
       let res = await request(
-        `staff?page=${this.page}&username=${this.username}`
+        `member?page=${this.page}&username=${this.username}`
       )
       if (res.error_code === 10000) {
         this.data = res.data.data
@@ -134,6 +133,16 @@ export default {
         this.pageSize = res.data.total
         this.total = res.data.total
       }
+    },
+    change(id, key, status) {
+      request(`member/${id}`, { status: status }, 'PUT').then((res) => {
+        if (res.error_code === 10000) {
+          this.data[key]['status'] = status
+          this.$message.success(res.msg)
+        } else {
+          this.$message.error(res.msg)
+        }
+      })
     },
     handle_page(e) {
       this.page = e

@@ -11,7 +11,7 @@
                   type="text"
                   v-model="form.account"
                   required="required"
-                  placeholder="用户名"
+                  placeholder="请输入邮箱"
                 />
                 <span class="bottom"></span>
                 <span class="right"></span>
@@ -65,8 +65,9 @@ export default {
       let res = await request('/login', this.form, 'POST')
       if (res.error_code === 10000) {
         this.$message.success('登录成功')
-        localStorage.setItem('token', res.data)
+        localStorage.setItem('token', res.data.token)
         localStorage.setItem('username', this.form.account)
+        localStorage.setItem('userinfo', JSON.stringify(res.data))
         router.push({ path: '/', name: '主页' })
         window.location.reload()
       } else {

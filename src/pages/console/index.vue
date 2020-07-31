@@ -24,7 +24,7 @@
       </keep-alive>
       <!--服务器信息统计-->
       <keep-alive>
-        <Index/>
+        <Index />
       </keep-alive>
     </div>
   </div>
@@ -47,7 +47,20 @@ export default {
   name: 'index',
   data() {
     return {
-      list: [],
+      list: [
+        { title: '注册用户', tag: '昨', number: 20, color: '#5fb877' },
+        { title: '注册用户', tag: '今', number: 24, color: '#5fb877' },
+        { title: '注册用户', tag: '周', number: 120, color: '#5fb877' },
+        { title: '注册用户', tag: '月', number: 529, color: '#5fb877' },
+        { title: '交易金额', tag: '昨', number: 10, color: '#419df7' },
+        { title: '交易金额', tag: '今', number: 26, color: '#419df7' },
+        { title: '交易金额', tag: '周', number: 80, color: '#419df7' },
+        { title: '交易金额', tag: '月', number: 329, color: '#419df7' },
+        { title: '订单量', tag: '昨', number: 42, color: 'teal' },
+        { title: '订单量', tag: '今', number: 81, color: 'teal' },
+        { title: '订单量', tag: '周', number: 350, color: 'teal' },
+        { title: '订单量', tag: '月', number: 1200, color: 'teal' }
+      ],
       userData: {
         columns: ['日期', '访问用户', '下单用户', '下单率'],
         rows: [
@@ -61,9 +74,7 @@ export default {
       },
     }
   },
-  created() {
-    this._request()
-  },
+  created() {},
   methods: {
     async _request() {
       let res = await request('record')

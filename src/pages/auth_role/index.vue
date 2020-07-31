@@ -35,7 +35,6 @@
               >添加</el-button
             >
           </div>  
-          <span>共有数据: {{ total }} 条</span>
         </div>
         <!--数据-->
         <div class="card-body text">
@@ -45,6 +44,10 @@
             <el-table-column prop="desc" label="角色描述">
             </el-table-column>
             <el-table-column prop="status" width="120" label="状态">
+              <template slot-scope="scope">
+                  <span v-if="scope.row.status" class="brand">已启用</span>
+                  <span v-else class="error">待启用</span>
+              </template>
             </el-table-column>
             <el-table-column prop="create_time" width="180" label="创建时间">
             </el-table-column>
@@ -75,33 +78,15 @@
                 ></el-button>
                 <el-button
                   type="danger"
-                  title="修改密码"
-                  @click="edit_password(scope.row.uid)"
-                  icon="el-icon-key"
-                  size="mini"
-                ></el-button>
-                <!-- <el-button
-                  type="danger"
                   title="删除"
                   @click="remove(scope.row.id, scope.$index)"
                   icon="el-icon-delete"
                   size="mini"
-                ></el-button> -->
+                ></el-button>
               </template>
             </el-table-column>
           </el-table>
         </div>
-      </div>
-      <!--分页-->
-      <div class="page">
-        <el-pagination
-          background
-          :page-size="pageSize"
-          layout="prev, pager, next"
-          @current-change="handle_page"
-          :total="total"
-        >
-        </el-pagination>
       </div>
     </div>
   </div>
@@ -115,7 +100,6 @@ export default {
   name: 'index',
   data() {
     return {
-      uid: 0,
       title: '',
       page: 1,
       pageSize: 20,
@@ -130,21 +114,18 @@ export default {
   methods: {
     async _request() {
       let res = await request(
-        `role?page=${this.page}&tile=${this.title}`
+        `role?page=${this.page}&title=${this.title}`
       )
       if (res.error_code === 10000) {
-        this.data = res.data.data
-        this.page = res.data.current_page
-        this.pageSize = res.data.per_page
-        this.total = res.data.total
+        this.data = res.data
       }
     },
     create() {
-      store.commit('add_tabs', { path: 'add_role', name: '添加角色' })
+      store.commit('add_tabs', { path: 'add_auth_role', name: '添加角色' })
     },
     edit(id) {
       store.commit('add_tabs', {
-        path: `edit_role`,
+        path: `edit_auth_role`,
         name: '编辑角色',
         params: { id: id },
       })

@@ -9,8 +9,8 @@
       <table class="table">
         <tbody>
           <tr v-for="(val, key) in data" :key="key">
-            <td v-text="key"></td>
-            <td v-text="val"></td>
+            <td width="30%" v-text="key"></td>
+            <td width="70%" v-text="val"></td>
           </tr>
         </tbody>
       </table>
@@ -20,6 +20,7 @@
 
 <script>
 import { request } from '../../untils/js/request'
+import { timestamp } from '../../untils/js/common'
 export default {
   name: 'index',
   data() {
@@ -32,9 +33,15 @@ export default {
   },
   methods: {
     async _request() {
-      let data = await request('/index/console')
+      let data = await request('/console')
       if (data.error_code === 10000) {
         this.data = data.data
+        var bj = this.data['北京时间']
+        var server = this.data['服务器时间']
+        setInterval(() => {
+          this.data['北京时间'] = timestamp(bj++)
+          this.data['服务器时间'] = timestamp(server++)
+        },1000)
       }
     },
   },

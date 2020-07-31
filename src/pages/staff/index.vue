@@ -1,5 +1,6 @@
 <template>
   <div class="main">
+    <userinfo :status="status" :userinfo="userinfo" @close="closeUserInfo"></userinfo>
     <div class="router">
       <div class="card">
         <div class="card-header">
@@ -78,9 +79,18 @@
         </div>
         <!--数据-->
         <div class="card-body text">
-          <el-table :data="data" style="width: 100%">
+          <el-table :data="data">
             <el-table-column prop="id" label="ID" width="80"> </el-table-column>
-            <el-table-column prop="nickname" label="姓名"> </el-table-column>
+            <el-table-column prop="nickname" label="姓名">
+              <template slot-scope="scope">
+                <span
+                  @click="look(scope.row)"
+                  class="success"
+                  style="    cursor: pointer;"
+                  v-text="scope.row.nickname"
+                ></span>
+              </template>
+            </el-table-column>
             <el-table-column label="头像" width="100">
               <template slot-scope="scope">
                 <el-avatar
@@ -93,9 +103,34 @@
             </el-table-column>
             <el-table-column prop="email" label="邮箱" width="220">
             </el-table-column>
+            <el-table-column prop="role" label="角色" width="180">
+              <template slot-scope="scope">
+                <span
+                  v-for="(val, key) in scope.row.role"
+                  :key="key"
+                  v-text="val.title"
+                  class="brand"
+                  style="font-size: 13px;
+    margin-left: 5px;"
+                ></span>
+              </template>
+            </el-table-column>
             <el-table-column prop="create_time" width="180" label="创建时间">
             </el-table-column>
-            <el-table-column prop="status" label="状态" width="180">
+
+            <el-table-column prop="status" width="120" label="状态">
+              <template slot-scope="scope">
+                <span v-if="scope.row.status" class="brand">已启用</span>
+                <span v-else class="info">待启用</span>
+                <span></span>
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="status"
+              fixed="right"
+              label="操作"
+              width="180"
+            >
               <template slot-scope="scope">
                 <el-button
                   type="primary"
@@ -157,9 +192,13 @@
 <script>
 import { request } from '../../untils/js/request'
 import store from '../../store'
+import userinfo from '../../components/userinfo'
 
 export default {
   name: 'index',
+  components: {
+    userinfo,
+  },
   data() {
     var validate = (rule, value, callback) => {
       if (value === '') {
@@ -178,6 +217,8 @@ export default {
       total: 0,
       layer: false,
       data: [],
+      status: false,
+      userinfo: {},
       rules: [{ required: true, validator: validate, trigger: 'blur' }],
       form: { password: '', checkPassword: '' },
     }
@@ -298,9 +339,17 @@ export default {
         }
       })
     },
+    look(info) {
+      this.status = true
+      this.userinfo = info
+    },
+    closeUserInfo(data) {
+      this.userinfo = {}
+      this.status = data
+    },
     reset(form) {
       this.$refs[form].resetFields()
-    },
+    }
   },
 }
 </script>

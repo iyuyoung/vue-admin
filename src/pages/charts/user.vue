@@ -17,3 +17,7 @@ export default {
   }
 }
 </script>
+
+<style lang="less" scoped>
+.card{box-sizing: border-box;}
+</style>

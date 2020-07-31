@@ -45,20 +45,20 @@
             </el-radio-group>
           </el-form-item>
           <el-form-item label="用户角色" prop="pid">
-            <el-select v-model="form.pid" placeholder="请选择用户角色">
-              <el-option
-                v-for="item in options"
-                :key="item.id"
-                :label="item.title"
-                :value="item.id"
-              ></el-option>
-            </el-select>
+            <el-cascader
+              :options="options"
+              v-model="value"
+              :props="{ multiple: true }"
+              clearable
+              @change="handleChange"
+            ></el-cascader>
           </el-form-item>
           <el-form-item label="用户头像">
             <el-upload
               class="upload-demo"
               :action="action"
               :headers="header"
+              :data="{ path: 'avatar', types: 'qiniu' }"
               :on-success="handleAvatarSuccess"
               :on-remove="handleRemove"
               :file-list="fileList"
@@ -97,7 +97,8 @@ export default {
       action: this.Base + '/uploads',
       paths: { path: 'avatar' },
       header: { token: localStorage.getItem('token') },
-      options: [{ label: '请选择', value: 0 }],
+      options: [],
+      value: [],
       fileList: [{ name: '缩略图', url: '' }],
       form: {
         nickname: '',
@@ -105,20 +106,34 @@ export default {
         phone: '',
         email: '',
         avatar: '',
+        role: '',
         gender: 1,
       },
     }
   },
   mounted() {
     this.id = this.$route.params.id
-    this._getOne()
+    this.getOne()
+    this.getRole()
   },
   methods: {
-    async _getOne() {
+    async getRole() {
+      let res = await request('role')
+      if (res.error_code === 10000) {
+        res.data.map((item) => {
+          this.options.push({ label: item.label, value: item.value })
+        })
+      }
+    },
+    async getOne() {
       let res = await request(`staff/${this.id}`)
       if (res.error_code === 10000) {
+        this.value = []
         this.form = res.data
         this.fileList[0]['url'] = this.form.avatar
+        if (res.data.role_set) {
+          this.value = res.data.role_set.split(',')
+        }
       }
     },
     handleAvatarSuccess(e) {
@@ -126,6 +141,13 @@ export default {
     },
     handleRemove() {
       this.form.avatar = ''
+    },
+    handleChange(e) {
+      let arr = []
+      e.map((item) => {
+        arr = arr.concat(item)
+      })
+      this.form.role = arr.join(',')
     },
     onSubmit(form) {
       this.$refs[form].validate((valid) => {

@@ -1,5 +1,11 @@
 <template>
   <div class="home">
+    <!-- 用户基本信息 -->
+    <userinfo
+      :status="status"
+      :userinfo="info"
+      @close="closeUserInfo"
+    ></userinfo>
     <el-container>
       <!-- 侧边栏 -->
       <el-aside :class="{ aside: isCollapse }">
@@ -11,6 +17,7 @@
               class="el-menu-vertical-demo"
               background-color="#545c64"
               text-color="#fff"
+              :unique-opened="true"
               active-text-color="#ffd04b"
             >
               <el-submenu index="1">
@@ -50,15 +57,20 @@
                   >
                   <el-menu-item
                     index="3-2"
-                    @click="addTab('/category', '分类管理')"
-                    >分类管理</el-menu-item
+                    @click="addTab('/brand', '品牌列表')"
+                    >品牌列表</el-menu-item
+                  >
+                  <el-menu-item
+                    index="3-3"
+                    @click="addTab('/category', '分类列表')"
+                    >分类列表</el-menu-item
                   >
                 </el-menu-item-group>
               </el-submenu>
               <!--订单管理-->
               <el-submenu index="4">
                 <template slot="title">
-                  <i class="el-icon-sell"></i>
+                  <i class="el-icon-s-order"></i>
                   <span>订单管理</span>
                 </template>
                 <el-menu-item-group>
@@ -69,53 +81,62 @@
                   >
                 </el-menu-item-group>
               </el-submenu>
-              <!-- 商家管理 -->
+              <!--文章-->
               <el-submenu index="5">
+                <template slot="title">
+                  <i class="el-icon-s-management"></i>
+                  <span>文章管理</span>
+                </template>
+                <el-menu-item-group>
+                  <el-menu-item
+                    index="5-1"
+                    @click="addTab('/article', '文章列表')"
+                    >文章列表</el-menu-item
+                  >
+                  <el-menu-item
+                    index="5-2"
+                    @click="addTab('/article_category', '文章分类')"
+                    >文章分类</el-menu-item
+                  >
+                  <el-menu-item
+                    index="5-3"
+                    @click="addTab('/article_author', '文章作者')"
+                    >文章作者</el-menu-item
+                  >
+                </el-menu-item-group>
+              </el-submenu>
+              <!--活动设置-->
+              <el-submenu index="6">
+                <template slot="title">
+                  <i class="el-icon-present"></i>
+                  <span>活动设置</span>
+                </template>
+                <el-menu-item-group>
+                  <el-menu-item
+                    index="6-1"
+                    @click="addTab('/banner', 'banner列表')"
+                    >banner列表</el-menu-item
+                  >
+                </el-menu-item-group>
+              </el-submenu>
+              <!-- 商家管理 -->
+              <el-submenu index="7">
                 <template slot="title">
                   <i class="el-icon-money"></i>
                   <span>商家管理</span>
                 </template>
                 <el-menu-item-group>
                   <el-menu-item
-                    index="5-1"
+                    index="7-1"
                     @click="addTab('/business', '商家列表')"
                     >商家列表</el-menu-item
-                  >
-                </el-menu-item-group>
-              </el-submenu>
-              <!-- 兑换类别 -->
-              <el-submenu index="6">
-                <template slot="title">
-                  <i class="el-icon-money"></i>
-                  <span>兑换列表</span>
-                </template>
-                <el-menu-item-group>
-                  <el-menu-item index="6-1" @click="addTab('/code', '兑换码')"
-                    >兑换码</el-menu-item
-                  >
-                </el-menu-item-group>
-              </el-submenu>
-              <!-- 设置 -->
-              <el-submenu index="7">
-                <template slot="title">
-                  <i class="el-icon-setting"></i>
-                  <span>设置</span>
-                </template>
-                <el-menu-item-group>
-                  <el-menu-item
-                    index="7-1"
-                    @click="addTab('/admin', '管理员设置')"
-                    >管理员设置</el-menu-item
-                  >
-                  <el-menu-item index="7-2" @click="addTab('/rule', '规则设置')"
-                    >规则设置</el-menu-item
                   >
                 </el-menu-item-group>
               </el-submenu>
               <!-- 权限管理 -->
               <el-submenu index="8">
                 <template slot="title">
-                  <i class="el-icon-setting"></i>
+                  <i class="el-icon-unlock"></i>
                   <span>权限管理</span>
                 </template>
                 <el-menu-item-group>
@@ -127,8 +148,27 @@
                   <el-menu-item index="8-2" @click="addTab('/rule', '权限菜单')"
                     >权限菜单</el-menu-item
                   >
-                  <el-menu-item index="8-3" @click="addTab('/auth-role', '角色管理')"
+                  <el-menu-item
+                    index="8-3"
+                    @click="addTab('/auth-role', '角色管理')"
                     >角色管理</el-menu-item
+                  >
+                </el-menu-item-group>
+              </el-submenu>
+              <!-- 设置 -->
+              <el-submenu index="9">
+                <template slot="title">
+                  <i class="el-icon-setting"></i>
+                  <span>系统设置</span>
+                </template>
+                <el-menu-item-group>
+                  <el-menu-item
+                    index="9-1"
+                    @click="addTab('/admin', '管理员设置')"
+                    >管理员设置</el-menu-item
+                  >
+                  <el-menu-item index="9-2" @click="addTab('/rule', '规则设置')"
+                    >规则设置</el-menu-item
                   >
                 </el-menu-item-group>
               </el-submenu>
@@ -190,6 +230,9 @@
                   </dl>
                 </el-collapse-transition>
               </li>
+              <li class="avatar">
+                <img :src="info.avatar" />
+              </li>
             </ul>
           </div>
           <el-tabs
@@ -228,13 +271,19 @@ import store from '../store/index'
 import { request } from '../untils/js/request'
 import router from '../router/index'
 import { closeTab } from '../untils/js/common'
+import userinfo from '../components/userinfo'
 export default {
   name: 'Index',
+  components: {
+    userinfo,
+  },
   data() {
     return {
       isCollapse: false,
       out: false,
       username: 'admin',
+      info: {},
+      status: false,
       defaultTab: store.state.active,
       tabs: store.state.path,
     }
@@ -255,6 +304,7 @@ export default {
     },
   },
   mounted() {
+    this.info = JSON.parse(localStorage.getItem('userinfo'))
     // 页面刷新打开当前路由tab
     if (this.$route.path !== '/') {
       store.commit('add_tabs', {
@@ -277,6 +327,9 @@ export default {
       this.defaultTab = path
       store.commit('add_tabs', { path: path, name: title, params: { id: id } })
     },
+    closeUserInfo(data) {
+      this.status = data
+    },
     // 打开标签
     onTabClick(tab) {
       this.defaultTab = tab.$attrs.path
@@ -291,7 +344,14 @@ export default {
     },
     // 查看资料
     showData() {
-      this.$message.error('暂无资料')
+      request('staff/0').then((res) => {
+        if (res.error_code === 10000) {
+          this.status = true
+          this.info = res.data
+        } else {
+          this.$message.error('暂无资料')
+        }
+      })
     },
     // 退出登陆
     loginOut() {
@@ -335,6 +395,28 @@ export default {
     background: #545c64;
     .el-menu {
       border-right: none;
+      .el-submenu [class^='el-icon-'] {
+        color: #ccc;
+      }
+      .el-submenu {
+        .el-submenu__title {
+          span {
+            color: #ccc;
+          }
+          &:hover {
+            i {
+              color: #ffffff !important;
+              transform: translate3d(0px, -1px, 10px);
+            }
+            span {
+              color: #ffffff;
+            }
+          }
+          .el-submenu__icon-arrow {
+            top: 55%;
+          }
+        }
+      }
     }
   }
   .aside {
@@ -371,6 +453,21 @@ export default {
           display: flex;
           justify-content: space-between;
           padding-left: 0px;
+          .avatar {
+            position: relative;
+            img {
+              width: 35px;
+              height: 35px;
+              overflow: hidden;
+              overflow: hidden;
+              position: absolute;
+              top: -7px;
+              cursor: pointer;
+            }
+            img:hover {
+              transform: rotate(360deg);
+            }
+          }
           &:last-child {
             padding-right: 6%;
           }

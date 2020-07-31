@@ -8,7 +8,7 @@
         <el-form ref="form" :model="form" label-width="80px">
           <el-form-item label="上级菜单" prop="pid">
             <el-cascader
-              v-model="form.pid"
+              v-model="value"
               :options="options"
               @change="handleChange"
             ></el-cascader>
@@ -64,6 +64,12 @@
               <el-radio-button label="0">不显示</el-radio-button>
             </el-radio-group>
           </el-form-item>
+          <el-form-item label="是否启用" prop="status">
+            <el-radio-group v-model="form.status">
+              <el-radio-button label="1">启用</el-radio-button>
+              <el-radio-button label="0">不启用</el-radio-button>
+            </el-radio-group>
+          </el-form-item>
           <el-form-item
             label="排序值"
             prop="sort"
@@ -99,6 +105,7 @@ export default {
       status: false,
       popover: false,
       options: [{ label: '顶级分类', value: 0 }],
+      value: [0],
       form: {
         pid: 0,
         menu_name: '',
@@ -108,6 +115,7 @@ export default {
         avatar: '',
         icon_class: 'ri-home-3-fill',
         is_show: 1,
+        status: 1,
       },
     }
   },
@@ -130,13 +138,17 @@ export default {
           confirmButtonText: '继续添加',
           cancelButtonText: '关闭',
           type: 'success',
-        }).then((res) => {
-          if (res === 'confirm') {
-            this.reset('form')
-          } else {
-            this.close()
-          }
         })
+          .then((res) => {
+            if (res === 'confirm') {
+              this.reset('form')
+            }
+          })
+          .catch((res) => {
+            if (res === 'cancel') {
+              this.close()
+            }
+          })
       } else {
         this.$message.error(res.msg)
       }
@@ -162,7 +174,7 @@ export default {
     },
     handleChange(e) {
       this.form.pid = e[e.length - 1]
-    }
+    },
   },
 }
 </script>

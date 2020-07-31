@@ -56,20 +56,19 @@
             ></el-input>
           </el-form-item>
           <el-form-item label="用户角色" prop="pid">
-            <el-select v-model="form.pid" placeholder="请选择用户角色">
-              <el-option
-                v-for="item in options"
-                :key="item.id"
-                :label="item.title"
-                :value="item.id"
-              ></el-option>
-            </el-select>
+            <el-cascader
+              :options="options"
+              v-model="value"
+              :props="{ multiple: true }"
+              clearable
+              @change="handleChange"
+            ></el-cascader>
           </el-form-item>
           <el-form-item label="用户头像">
             <el-upload
               class="upload-demo"
               :action="action"
-              :data="paths"
+              :data="{ path: 'avatar', types: 'qiniu' }"
               :headers="header"
               :on-success="handleAvatarSuccess"
               :on-remove="handleRemove"
@@ -107,19 +106,31 @@ export default {
       action: this.Base + '/upload',
       header: { token: localStorage.getItem('token') },
       paths: { path: 'avatar' },
-      options: [{ label: '请选择', value: 0 }],
+      options: [],
+      value: [],
       form: {
         nickname: '',
         password: '',
         phone: '',
         email: '',
         avatar: '',
+        role: '',
         gender: 1,
       },
     }
   },
-  mounted() {},
+  mounted() {
+    this.getRole()
+  },
   methods: {
+    async getRole() {
+      let res = await request('role')
+      if (res.error_code === 10000) {
+        res.data.map((item) => {
+          this.options.push({ label: item.label, value: item.value })
+        })
+      }
+    },
     async _create() {
       let res = await request('/staff', this.form, 'POST')
       if (res.error_code === 10000) {
@@ -128,10 +139,13 @@ export default {
           cancelButtonText: '关闭',
           type: 'success',
         })
-          .then(() => {
+          .then((res) => {
             if (res === 'confirm') {
-              this.reset()
-            } else {
+              this.reset('form')
+            }
+          })
+          .catch((res) => {
+            if (res === 'cancel') {
               this.close()
             }
           })
@@ -144,6 +158,13 @@ export default {
     },
     handleRemove() {
       this.form.avatar = ''
+    },
+    handleChange(e) {
+      let arr = []
+      e.map((item) => {
+        arr = arr.concat(item)
+      })
+      this.form.role = arr.join(',')
     },
     onSubmit(form) {
       this.$refs[form].validate((valid) => {

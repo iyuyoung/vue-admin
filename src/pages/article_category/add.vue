@@ -2,57 +2,51 @@
   <div class="router">
     <div class="card">
       <div class="card-header">
-        <span class="tag">新增角色</span>
+        新增文章分类
       </div>
       <div class="main">
         <el-form ref="form" :model="form" label-width="80px">
-          <el-form-item
-            label="角色名称"
-            prop="name"
-            :rules="[{ required: true, message: '角色名称不能为空' }]"
-          >
-            <el-input
-              placeholder="请输入角色名称"
-              v-model="form.name"
-            ></el-input>
-          </el-form-item>
-          <el-form-item
-            label="角色描述"
-            prop="desc"
-            :rules="[{ required: true, message: '角色描述不能为空' }]"
-          >
-            <el-input
-              placeholder="请输入角色描述"
-              v-model="form.desc"
-            ></el-input>
-          </el-form-item>
-          <el-form-item
-            label="排序值"
-            prop="sort"
-            :rules="[{ required: true, message: '排序值不能为空' }]"
-          >
-            <el-input
-              placeholder="请输入排序值,排序值越小越靠前"
-              v-model="form.sort"
-            ></el-input>
-          </el-form-item>
-          <el-form-item label="角色权限" prop="auth_item_array">
+          <el-form-item label="上级菜单" prop="pid">
             <el-cascader
-              v-model="form.auth_item_array"
+              v-model="form.pid"
               :options="options"
-              :props="{ multiple: true }"
+              :props="{ checkStrictly: true }"
               @change="handleChange"
             ></el-cascader>
           </el-form-item>
           <el-form-item
-            label="状态"
-            prop="status"
-            :rules="[{ required: true, message: '状态不能为空' }]"
+            label="名称"
+            prop="title"
+            :rules="[{ required: true, message: '文章分类名称不能为空' }]"
           >
-            <el-radio-group v-model="form.status">
-              <el-radio-button label="1">启用</el-radio-button>
-              <el-radio-button label="0">停用</el-radio-button>
-            </el-radio-group>
+            <el-input
+              placeholder="请输入文章分类名称"
+              v-model="form.title"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="分类备注" prop="remark">
+            <el-input
+              type="textarea"
+              placeholder="请输入文章分类备注"
+              v-model="form.remark"
+            ></el-input>
+          </el-form-item>
+
+          <el-form-item label="分类图片" prop="image">
+            <el-upload
+              class="upload-demo"
+              :action="action"
+              :headers="headers"
+              :data="{'path':'category','types':'qiniu'}"
+              :on-success="imageSuccess"
+              :on-remove="imageRemove"
+              list-type="picture"
+            >
+              <el-button size="small" type="primary">点击上传</el-button>
+              <div slot="tip" class="el-upload__tip">
+                只能上传jpg/png文件，且不超过500kb
+              </div>
+            </el-upload>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="onSubmit('form')"
@@ -70,36 +64,35 @@
 <script>
 import { request } from '../../untils/js/request'
 import { closeTab } from '../../untils/js/common'
-
 export default {
   components: {},
-  name: 'add-auth-role',
+  name: 'add_article_category',
   data() {
     return {
-      status: false,
+      action: this.Base + '/upload',
+      headers: { token: '' },
       options: [],
       form: {
-        name: '',
-        desc: '',
-        sort: '',
-        auth_item_set: '',
-        auth_item_array: [],
-        status: 1,
+        title: '',
+        remark: '',
+        image: '',
+        sort: 50,
       },
     }
   },
   mounted() {
-    this.getChildren()
+    this.headers.token = localStorage.getItem('token')
+    this._getCategory()
   },
   methods: {
-    async getChildren() {
-      let res = await request('menu')
+    async _getCategory() {
+      let res = await request(`/article_category?list=1`, '')
       if (res.error_code === 10000) {
         this.options = res.data
       }
     },
     async _create() {
-      let res = await request('/role', this.form, 'POST')
+      let res = await request('article_category', this.form, 'POST')
       if (res.error_code === 10000) {
         this.$confirm(`${res.msg}, 是否继续添加?`, '提示', {
           confirmButtonText: '继续添加',
@@ -116,31 +109,31 @@ export default {
               this.close()
             }
           })
-      } else {
-        this.$message.error(res.msg)
       }
     },
-    onSubmit(form) {
-      this.$refs[form].validate((valid) => {
-        if (valid) {
-          this._create()
-        } else {
-          this.$message.error('请完善信息')
-        }
-      })
+    imageSuccess(e) {
+      this.form.image = e.data
     },
-    handleChange(e) {
-      let arr = []
-      e.map((item) => {
-        arr = arr.concat(item)
-      })
-      this.form.auth_item_set = arr.join(',')
+    imageRemove() {
+      this.form.image = ''
     },
     reset(form) {
       this.$refs[form].resetFields()
     },
     close() {
       closeTab()
+    },
+    onSubmit(form) {
+      this.$refs[form].validate((valid) => {
+        if (valid) {
+          this._create()
+        } else {
+          this.$message.error('请完善内容')
+        }
+      })
+    },
+    handleChange(e) {
+      this.form.pid = e[e.length - 1]
     }
   },
 }

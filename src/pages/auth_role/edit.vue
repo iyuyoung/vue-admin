@@ -7,12 +7,12 @@
       <div class="main">
         <el-form ref="form" :model="form" label-width="80px">
           <el-form-item
-            label="名称"
+            label="角色名称"
             prop="name"
             :rules="[{ required: true, message: '角色名称不能为空' }]"
           >
             <el-input
-              placeholder="请输入用户角色名称"
+              placeholder="请输入角色名称"
               v-model="form.name"
             ></el-input>
           </el-form-item>
@@ -27,16 +27,27 @@
             ></el-input>
           </el-form-item>
           <el-form-item
-            label="邮箱"
+            label="排序值"
             prop="sort"
-            :rules="[{ required: true, message: '邮箱不能为空' }]"
+            :rules="[{ required: true, message: '排序值不能为空' }]"
           >
-            <el-input placeholder="请输入邮箱" v-model="form.sort"></el-input>
+            <el-input
+              placeholder="请输入排序值,排序值越小越靠前"
+              v-model="form.sort"
+            ></el-input>
+          </el-form-item>
+          <el-form-item label="角色权限" prop="auth_item_array">
+            <el-cascader
+              v-model="form.auth_item_array"
+              :options="options"
+              :props="{ multiple: true }"
+              @change="handleChange"
+            ></el-cascader>
           </el-form-item>
           <el-form-item
-            label="启用"
+            label="状态"
             prop="status"
-            :rules="[{ required: true, message: '性别不能为空' }]"
+            :rules="[{ required: true, message: '状态不能为空' }]"
           >
             <el-radio-group v-model="form.status">
               <el-radio-button label="1">启用</el-radio-button>
@@ -45,7 +56,7 @@
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click="onSubmit('form')"
-              >立即创建</el-button
+              >立即修改</el-button
             >
             <el-button type="danger" @click="reset('form')">重置数据</el-button>
             <el-button @click="close">关闭</el-button>
@@ -62,31 +73,42 @@ import { closeTab } from '../../untils/js/common'
 
 export default {
   components: {},
-  name: 'add-user',
+  name: 'edit-auth-role',
   data() {
     return {
       id: 0,
+      options: [],
       form: {
         name: '',
         desc: '',
         sort: '',
-        status: 0,
-      },
+        auth_item_set: '',
+        auth_item_array: [],
+        status: 1,
+      }
     }
   },
   mounted() {
     this.id = this.$route.params.id
+    this.getChildren()
     this._getOne()
   },
   methods: {
+    async getChildren() {
+      let res = await request('menu')
+      if (res.error_code === 10000) {
+        this.options = res.data
+      }
+    },
     async _getOne() {
       let res = await request(`role/${this.id}`)
       if (res.error_code === 10000) {
         this.form = res.data
+        this.form.auth_item_array = Object.values(this.form.auth_item_array)
       }
     },
-    async _update() {
-      let res = request(`role/${this.id}`, this.form, 'PUT')
+    async edit() {
+      let res = await request(`role/${this.id}`, this.form, 'PUT')
       if (res.error_code === 10000) {
         this.$message.success(res.msg)
         setTimeout(() => {
@@ -99,11 +121,18 @@ export default {
     onSubmit(form) {
       this.$refs[form].validate((valid) => {
         if (valid) {
-          this._update()
+          this.edit()
         } else {
           this.$message.error('请完善信息')
         }
       })
+    },
+    handleChange(e) {
+      let arr = []
+      e.map((item) => {
+        arr = arr.concat(item)
+      })
+      this.form.auth_item_set = arr.join(',')
     },
     reset(form) {
       this.$refs[form].resetFields()

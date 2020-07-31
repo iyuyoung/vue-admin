@@ -2,7 +2,7 @@
   <div class="card">
     <div class="card-header">
       <span v-text="title"></span>
-      <em v-text="tag" :class="color"></em>
+      <em v-text="tag" :style="{ background: color }"></em>
     </div>
     <div class="card-body">
       <div class="card-number">
@@ -17,27 +17,25 @@ export default {
   props: {
     title: {
       type: String,
-      default: '本周注册'
+      default: '本周注册',
     },
     tag: {
       type: String,
-      default: '周'
+      default: '周',
     },
     number: {
       type: Number,
-      default: 0
+      default: 0,
     },
-    color:{
-      type:String,
-      default:'brand-bg'
-    }
+    color: {
+      type: String,
+      default: 'brand-bg',
+    },
   },
-  data () {
-    return {
-
-    }
+  data() {
+    return {}
   },
-  name: 'number'
+  name: 'number',
 }
 </script>
 

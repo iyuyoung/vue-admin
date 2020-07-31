@@ -5,8 +5,8 @@
         <div class="card-header">
           <el-breadcrumb>
             <el-breadcrumb-item>首页</el-breadcrumb-item>
-            <el-breadcrumb-item>商品</el-breadcrumb-item>
-            <el-breadcrumb-item>商品列表</el-breadcrumb-item>
+            <el-breadcrumb-item>分类管理</el-breadcrumb-item>
+            <el-breadcrumb-item>分类列表</el-breadcrumb-item>
           </el-breadcrumb>
 
           <el-button
@@ -18,21 +18,15 @@
         </div>
         <!--搜索-->
         <div class="search" style="display:flex">
-          <el-select
-            v-model="category"
-            placeholder="请选择"
-            style="margin-right:5px;"
-          >
-            <el-option
-              v-for="(val, key) in options"
-              :key="key"
-              :label="val.label"
-              :value="val.value"
-            >
-            </el-option>
-          </el-select>
+          <el-cascader  v-model="category" placeholder="请选择分类"
+            style="width: 180px;margin-right: 10px;"
+            :options="options"
+            :props="{ checkStrictly: true }"
+            clearable
+          ></el-cascader>
+
           <el-input
-            placeholder="请输入商品名称"
+            placeholder="请输入分类名称"
             v-model="title"
             class="input-with-select"
           >
@@ -54,31 +48,22 @@
         <div class="card-body text">
           <el-table :data="data">
             <el-table-column prop="id" width="100" label="ID"></el-table-column>
-            <el-table-column prop="cate_title" width="150" label="商品分类">
-            </el-table-column>
-            <el-table-column prop="exchange" width="150" label="商品类型">
-              <template slot-scope="scope">
-                <span v-if="scope.row.exchange" class="warning">兑换商品</span>
-                <span class="danger" v-else>购买商品</span>
-              </template>
-            </el-table-column>
+            <el-table-column prop="pid" label="上级"> </el-table-column>
             <el-table-column prop="title" label="标题"> </el-table-column>
             <el-table-column prop="image" width="80" label="图片">
               <template slot-scope="scope">
-                <el-avatar
-                  style="width:35px;height:35px"
+                <el-image
+                  style="width: 40px; height: 40px"
                   :src="scope.row.image"
-                ></el-avatar>
+                  :preview-src-list="[scope.row.image]"
+                >
+                </el-image>
               </template>
             </el-table-column>
-            <el-table-column prop="describe" label="描述"> </el-table-column>
-            <el-table-column prop="price" width="150" label="商品价格">
-            </el-table-column>
-            <el-table-column prop="number" width="80" label="库存">
-            </el-table-column>
+            <el-table-column prop="desc" label="备注信息"> </el-table-column>
             <el-table-column prop="create_time" width="180" label="创建时间">
             </el-table-column>
-            <el-table-column label="操作" width="200">
+            <el-table-column fixed="right" label="操作" width="200">
               <template slot-scope="scope">
                 <el-button
                   size="mini"
@@ -133,15 +118,15 @@
 </template>
 
 <script>
-import { request } from '../../untils/js/request'
-import store from '../../store'
+import { request } from '../../../untils/js/request'
+import store from '../../../store'
 export default {
   name: 'index',
   data() {
     return {
       data: [],
       page: 1,
-      options: [],
+      options: [{ value: 0, label: '顶级分类' }],
       pagsize: 20,
       category: '',
       title: '',
@@ -155,7 +140,7 @@ export default {
   methods: {
     async _request() {
       let res = await request(
-        `/product?page=${this.page}&title=${this.title}&category=${
+        `/product_category?page=${this.page}&title=${this.title}&category=${
           this.category
         }`
       )
@@ -170,7 +155,8 @@ export default {
       }
     },
     async _getCategory() {
-      let res = await request(`/category?pid=1`, '')
+      this.options = [{ value: 0, label: '顶级分类' }]
+      let res = await request(`/product_category?pid=1`, '')
       if (res.error_code === 10000) {
         res.data.map((item) => {
           this.options.push({
@@ -181,11 +167,15 @@ export default {
       }
     },
     create() {
-      store.commit('add_tabs', { path: 'add-goods', name: '添加商品' })
+      store.commit('add_tabs', { path: 'add-category', name: '添加商品分类' })
       this.defaultTab = this.$route.path
     },
     async _change(id, key, status) {
-      let res = await request(`/product/${id}`, { status: status }, 'PUT')
+      let res = await request(
+        `/product_category/${id}`,
+        { status: status },
+        'PUT'
+      )
       if (res.error_code === 10000) {
         this.data[key]['status'] = status
         this.$message('修改成功')
@@ -195,7 +185,7 @@ export default {
     },
     async _changeAll(status) {
       let res = await request(
-        `/product/updateAll`,
+        `/product_category/updateAll`,
         { status: status, id: this.idAll },
         'POST'
       )
@@ -206,14 +196,14 @@ export default {
       }
     },
     async _detele(id, key) {
-      let res = await request(`/product/${id}`, '', 'DELETE')
+      let res = await request(`/product_category/${id}`, '', 'DELETE')
       if (res.error_code === 10000) {
         this.$message('删除成功')
         this.data.splice(key, 1)
       }
     },
     change(id, key, status) {
-      this.$confirm('此操作将更改商品状态, 是否继续?', '提示', {
+      this.$confirm('此操作将更改分类状态, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
@@ -222,7 +212,7 @@ export default {
       })
     },
     del(id, key) {
-      this.$confirm('此操作将删除商品, 是否继续?', '提示', {
+      this.$confirm('此操作将删除分类, 是否继续?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning',
@@ -232,7 +222,10 @@ export default {
     },
     _edit(id) {
       store.commit('set_id', id)
-      store.commit('add_tabs', { path: 'edit-product', name: '编辑商品' })
+      store.commit('add_tabs', {
+        path: 'edit-product-category',
+        name: '编辑商品分类',
+      })
     },
     handleCurrentChange(e) {
       this.page = e
@@ -242,13 +235,14 @@ export default {
       if (this.title || this.category) {
         this._request()
       } else {
-        this.$message('商品标题不能为空')
+        this.$message('分类标题不能为空')
       }
     },
     refresh() {
-      this.page = 1
+      Object.assign(this.$data, this.$options.data())
       this._request()
-    },
+      this._getCategory()
+    }
   },
 }
 </script>

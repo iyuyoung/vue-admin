@@ -8,7 +8,7 @@
         <el-form ref="form" :model="form" label-width="80px">
           <el-form-item label="上级菜单" prop="pid">
             <el-cascader
-              v-model="form.pid"
+              v-model="value"
               :options="options"
               @change="handleChange"
             ></el-cascader>
@@ -62,6 +62,12 @@
               <el-radio-button label="0">不显示</el-radio-button>
             </el-radio-group>
           </el-form-item>
+          <el-form-item label="是否启用" prop="status">
+            <el-radio-group v-model="form.status">
+              <el-radio-button label="1">启用</el-radio-button>
+              <el-radio-button label="0">不启用</el-radio-button>
+            </el-radio-group>
+          </el-form-item>
           <el-form-item
             label="排序值"
             prop="sort"
@@ -87,7 +93,7 @@
 
 <script>
 import { request } from '../../untils/js/request'
-import { closeTab } from '../../untils/js/common'
+import { closeTab, array_chunk } from '../../untils/js/common'
 import Icon from '../../components/icon'
 export default {
   components: { Icon },
@@ -96,6 +102,7 @@ export default {
     return {
       id: 0,
       status: false,
+      value: [0],
       options: [{ label: '顶级分类', value: 0 }],
       form: {},
     }
@@ -118,6 +125,12 @@ export default {
       let res = await request(`/menu/${this.id}`)
       if (res.error_code === 10000) {
         this.form = res.data
+        if (res.value[0].length) {
+          this.value = array_chunk(res.value[0])
+          this.value.push(this.id)
+        } else {
+          this.value = [0]
+        }
       }
     },
     async edit() {
@@ -151,7 +164,7 @@ export default {
     },
     handleChange(e) {
       this.form.pid = e[e.length - 1]
-    }
+    },
   },
 }
 </script>

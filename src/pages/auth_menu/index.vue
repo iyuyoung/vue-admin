@@ -40,26 +40,14 @@
             </el-table-column>
             <el-table-column width="100" prop="status" label="状态">
               <template slot-scope="scope">
-                <el-switch
-                  v-model="scope.row.status"
-                  active-color="teal"
-                  :change="changeStatus(scope.row)"
-                  inactive-color="#cccccc"
-                >
-                </el-switch>
+                <span class="success" v-if="scope.row.status">已启用</span>
+                <span class="info" v-else>未启用</span>
               </template>
             </el-table-column>
             <el-table-column prop="create_time" width="200" label="创建时间">
             </el-table-column>
             <el-table-column prop="status" label="状态" width="180">
               <template slot-scope="scope">
-                <el-button
-                  type="info"
-                  title="添加子菜单"
-                  @click="add(scope.row.id)"
-                  icon="el-icon-plus"
-                  size="mini"
-                ></el-button>
                 <el-button
                   type="primary"
                   title="编辑"
@@ -109,7 +97,10 @@ export default {
       }
     },
     create() {
-      store.commit('add_tabs', { path: 'add_menu', name: '添加权限菜单' })
+      store.commit('add_tabs', {
+        path: 'add_menu',
+        name: '添加权限菜单'
+      })
     },
     edit(id) {
       store.commit('add_tabs', {
@@ -142,9 +133,6 @@ export default {
       } else {
         this.$message.error(res.msg)
       }
-    },
-    changeStatus(e){
-        console.log(e)
     },
     change(id, status, key) {
       let title = status ? '启用' : '停用'

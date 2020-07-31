@@ -19,15 +19,41 @@ import add_auth_role from '../pages/auth_role/add'
 import edit_auth_role from '../pages/auth_role/edit'
 
 
+import article from '../pages/article/index'
+import add_article from '../pages/article/add'
+import edit_article from '../pages/article/edit'
+
+import article_category from '../pages/article_category/index'
+import add_article_category from '../pages/article_category/add'
+import edit_article_category from '../pages/article_category/edit'
+
+import article_author from '../pages/article_author/index'
+import add_article_author from '../pages/article_author/add'
+import edit_article_author from '../pages/article_author/edit'
+
+
+import banner from '../pages/banner/index'
+import add_banner from '../pages/banner/add'
+import edit_banner from '../pages/banner/edit'
+
+
+import product from '../pages/product/index/index'
+import add_product from '../pages/product/index/add'
+import edit_product from '../pages/product/index/edit'
+
+import brand from '../pages/product/brand/index'
+import add_brand from '../pages/product/brand/add'
+import edit_brand from '../pages/product/brand/edit'
+
+import category from '../pages/product/category/index'
+import add_category from '../pages/product/category/add'
+import edit_category from '../pages/product/category/edit'
+
+
 import business from '../pages/business/index'
 import addBusiness from '../pages/business/add'
 import editBusiness from '../pages/business/edit'
-import Product from '../pages/product/index'
-import addProduct from '../pages/product/add'
-import editProduct from '../pages/product/edit'
-import category from '../pages/category/index'
-import addCategory from '../pages/category/add'
-import editCategory from '../pages/category/edit'
+
 import order from '../pages/order/index'
 import Admin from '../pages/admin/index'
 import addAdmin from '../pages/admin/add'
@@ -119,6 +145,94 @@ const router = new VueRouter({
             }
         },
         {
+            path: '/article',
+            name: '文章列表',
+            component: article,
+            meta: {
+                keepAlive: true
+            }
+        }, {
+            path: '/add-article',
+            name: '添加文章',
+            component: add_article,
+            meta: {
+                keepAlive: false
+            }
+        }, {
+            path: '/edit-article',
+            name: '编辑文章',
+            component: edit_article,
+            meta: {
+                keepAlive: false
+            }
+        },
+        {
+            path: '/article-category',
+            name: '文章分类',
+            component: article_category,
+            meta: {
+                keepAlive: true
+            }
+        }, {
+            path: '/add-article-category',
+            name: '添加分类',
+            component: add_article_category,
+            meta: {
+                keepAlive: false
+            }
+        }, {
+            path: '/edit-article-category',
+            name: '编辑分类',
+            component: edit_article_category,
+            meta: {
+                keepAlive: false
+            }
+        },
+        {
+            path: '/article-author',
+            name: '文章作者',
+            component: article_author,
+            meta: {
+                keepAlive: true
+            }
+        }, {
+            path: '/add-article-author',
+            name: '添加作者',
+            component: add_article_author,
+            meta: {
+                keepAlive: false
+            }
+        }, {
+            path: '/edit-article-author',
+            name: '编辑作者',
+            component: edit_article_author,
+            meta: {
+                keepAlive: false
+            }
+        },
+        {
+            path: '/banner',
+            name: 'banner列表',
+            component: banner,
+            meta: {
+                keepAlive: true
+            }
+        }, {
+            path: '/add-banner',
+            name: '添加banner',
+            component: add_banner,
+            meta: {
+                keepAlive: false
+            }
+        }, {
+            path: '/edit-banner',
+            name: '编辑banner',
+            component: edit_banner,
+            meta: {
+                keepAlive: false
+            }
+        },
+        {
             path: '/user',
             name: '用户列表',
             component: user,
@@ -134,46 +248,8 @@ const router = new VueRouter({
             }
         },
         {
-            path: '/add-category',
-            name: '添加分类',
-            component: addCategory,
-            meta: {
-                keepAlive: true
-            }
-        }, {
-            path: '/edit-category',
-            name: '编辑分类',
-            component: editCategory,
-            meta: {
-                keepAlive: false
-            }
-        },
-        {
-            path: '/product',
-            name: '商品列表',
-            component: Product,
-            meta: {
-                keepAlive: true
-            }
-        },
-        {
-            path: '/add-product',
-            name: '添加商品',
-            component: addProduct,
-            meta: {
-                keepAlive: false
-            }
-        }, {
-            path: '/edit-product',
-            name: '编辑商品',
-            component: editProduct,
-            meta: {
-                keepAlive: false
-            }
-        },
-        {
             path: '/category',
-            name: '分类管理',
+            name: '分类列表',
             component: category,
             meta: {
                 keepAlive: true
@@ -181,15 +257,61 @@ const router = new VueRouter({
         },
         {
             path: '/add-category',
-            name: '添加分类',
-            component: addCategory,
+            name: '添加商品分类',
+            component: add_category,
             meta: {
-                keepAlive: false
+                keepAlive: true
             }
         }, {
             path: '/edit-category',
             name: '编辑分类',
-            component: editCategory,
+            component: edit_category,
+            meta: {
+                keepAlive: false
+            }
+        },
+        {
+            path: '/product',
+            name: '商品列表',
+            component: product,
+            meta: {
+                keepAlive: true
+            }
+        },
+        {
+            path: '/add-product',
+            name: '添加商品',
+            component: add_product,
+            meta: {
+                keepAlive: false
+            }
+        }, {
+            path: '/edit-product',
+            name: '编辑商品',
+            component: edit_product,
+            meta: {
+                keepAlive: false
+            }
+        },
+        {
+            path: '/brand',
+            name: '品牌列表',
+            component: brand,
+            meta: {
+                keepAlive: true
+            }
+        },
+        {
+            path: '/add-brand',
+            name: '添加品牌',
+            component: add_brand,
+            meta: {
+                keepAlive: false
+            }
+        }, {
+            path: '/edit-brand',
+            name: '编辑品牌',
+            component: edit_brand,
             meta: {
                 keepAlive: false
             }
