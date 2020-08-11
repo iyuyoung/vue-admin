@@ -232,6 +232,9 @@ export default {
             loading: true,
             name: 'file',
             action: this.Base + '/upload',
+            headers: (xhr) => {
+              xhr.setRequestHeader('token', localStorage.getItem('token'))
+            },
             response: (res) => {
               return this.Base + res.data
             },

@@ -1,6 +1,8 @@
 module.exports = {
   publicPath: process.env.NODE_ENV === 'production' ?
     '/static/admin/dist/' : '/',
+  outputDir: process.env.NODE_ENV === 'production' ?
+    '/static/admin/dist/' : '/',
   devServer: {
     disableHostCheck: true,
     proxy: {
